@@ -475,22 +475,22 @@ const NAMES={m:['Raghavan','Kuttappan','Mathai','Varkey','Sasidharan','Joseph','
   f:['Leela','Saramma','Kunjamma','Fathima','Mini','Sheeba','Lakshmi','Anitha','Rosamma','Sainaba','Omana','Sindhu'],
   kid:['Appu','Kunju','Ammu','Minnu','Chinnu','Unni','Kichu','Manikuttan','Achu','Pinky']};
 const QUOTES={
-  kid:['Ente school bag poyedaa!','Ammede aduthu parayum, kettoo!','Uncle-nu license undo ishtaa?','Ente ice cream poyi gadi!','Waaaah! Ammeee!'],
-  adult:['Entha gadi, kannu kandoode?','Ninakku license undo ishtaa?','Police-ne vilikkum, kettoo!','Ithu ente puthiya shirt aa gadi!','Ninakku vere pani onnum ille ishtaa?','Pooram kazhinjittum ninte bhranthu theernille?','Nee aaraa ishtaa, Thrissur-nte raajaavo?'],
-  old:['Ee kaalathe pillere kondu thottu!','Ente kannada poyi gadi!','Vadakkumnathaa, kaathukolane!','Ninte appan aaraa ishtaa?','Ente kaalam kazhinju, kettoo…'],
-  'Doctor':['Njan thanne treat cheytholaam, ishtaa.','OP ticket edukkanam ini, gadi!'],
-  'IAS':['Ninte file njan nokkikolaam, kettoo!','Collector-ine vilikkum ishtaa!'],
-  'Retd Judge':['Contempt of road aanu gadi!','Order! Order! Nee jail-il pokum ishtaa!'],
+  kid:['Ente school bag poyedaa!','Ammede aduthu parayum, kettoo!','Uncle-nu license undo?','Ente ice cream poyi gadi!','Waaaah! Ammeee!'],
+  adult:['Entha gadi, kannu kandoode?','Ninakku license undo?','Police-ne vilikkum, kettoo!','Ithu ente puthiya shirt aa gadi!','Ninakku vere pani onnum ille?','Pooram kazhinjittum ninte bhranthu theernille?','Nee aaraa, Thrissur-nte raajaavo?'],
+  old:['Ee kaalathe pillere kondu thottu!','Ente kannada poyi gadi!','Vadakkumnathaa, kaathukolane!','Ninte appan aaraa?','Ente kaalam kazhinju, kettoo…'],
+  'Doctor':['Njan thanne treat cheytholaam.','OP ticket edukkanam ini, gadi!'],
+  'IAS':['Ninte file njan nokkikolaam, kettoo!','Collector-ine vilikkum!'],
+  'Retd Judge':['Contempt of road aanu gadi!','Order! Order! Nee jail-il pokum!'],
   'Retd Teacher':['Njan ninte appane padippichathaa, kettoo!','Imposition ezhuthikko – 100 times, gadi!'],
-  'BTech':['Placement interview-nu pokuvaarnnu ishtaa!','Ente laptop poyedaa!'],
+  'BTech':['Placement interview-nu pokuvaarnnu!','Ente laptop poyedaa!'],
   'Masters':['Thesis submit cheyyan pokuvaarnnu gadi!'],
   'Kindergarten':['Waaaah! Ammeee!']
 };
-const VQUOTES={scooter:['Kuttiyum bharyayum undayirunnu ishtaa!','Ithu EMI-il eduthathaa gadi!'],bike:['Ishtaa, ithu 3 lakh-nte bike aa!','Ente bike-nte paint poyedaa!'],
-  car:['Insurance details tha ishtaa!','Bumper poyi gadi, kaasu venam!'],auto:['Union-il parayum, kettoo!','Namma aalu aanennu vicharichu ishtaa!'],
-  gbus:['Sarkar vandi aanu gadi, case aakum!','Passengers ellam irangi ishtaa!'],pbus:['Timing poyi! Owner kollum ishtaa!','Bell adichathaa gadi, nee kettille?'],
-  rich:['Do you know who my father is?','My lawyer will call you, ishtaa.'],
-  delivery:['Ishtaa, order late aayi, rating poyi!','Biriyani motham road-il, gadi!','Customer cancel cheythu, nee pay cheyyumo?']};
+const VQUOTES={scooter:['Kuttiyum bharyayum undayirunnu!','Ithu EMI-il eduthathaa gadi!'],bike:['Ithu 3 lakh-nte bike aa!','Ente bike-nte paint poyedaa!'],
+  car:['Insurance details tha!','Bumper poyi gadi, kaasu venam!'],auto:['Union-il parayum, kettoo!','Namma aalu aanennu vicharichu!'],
+  gbus:['Sarkar vandi aanu gadi, case aakum!','Passengers ellam irangi!'],pbus:['Timing poyi! Owner kollum!','Bell adichathaa gadi, nee kettille?'],
+  rich:['Do you know who my father is?','My lawyer will call you.'],
+  delivery:['Order late aayi, rating poyi!','Biriyani motham road-il, gadi!','Customer cancel cheythu, nee pay cheyyumo?']};
 const VICON={scooter:'🛵',bike:'🏍️',car:'🚗',auto:'🛺',gbus:'🚌',pbus:'🚌',rich:'🚙',delivery:'🛵'};
 function pedName(p){
   if(Math.random()<0.4)return null;
@@ -509,7 +509,7 @@ function pedOutcome(p){
   if(r<0.42)return{t:U.pick(HOSPITALS),h:1};
   if(r<0.6)return{t:'Minor scratches, went home cursing',h:0};
   if(r<0.72)return{t:'Filed a police complaint at the station',h:0};
-  if(r<0.82)return{t:'Got up and chased you, ishtaa',h:0};
+  if(r<0.82)return{t:'Got up and chased you',h:0};
   if(r<0.92)return{t:'Posted it on Facebook and WhatsApp groups',h:0};
   return{t:'Called the local councillor',h:0};
 }
