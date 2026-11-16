@@ -102,7 +102,7 @@ table.calc tr.total td{color:#f5c518;font-size:18px;border-bottom:none}
   <div class="tb" id="tRam" data-a="ram">RAM</div>
   <div class="tb" id="tGas" data-k="up">GAS</div>
   <div class="tb" id="tBrake" data-k="down">BRAKE</div>
-  <div class="tb" id="tHorn" data-a="horn">POM</div>
+  <div class="tb" id="tHorn" data-a="horn">HORN</div>
 </div>
 <div id="topBar"><button id="fsBtn" title="Full screen">⛶</button><button id="pauseBtn" title="Pause">❚❚</button><button id="homeBtn" title="Back to Nomadic Mirage">⌂</button></div>
 <div id="toast"></div>
@@ -1030,7 +1030,13 @@ const A={ctx:null,master:null,muted:false,musicOn:false,eng:null,noise:null,mus:
       for(let k=0;k<14;k++)nz(t+Math.random()*0.6,0.03,'bandpass',1500+Math.random()*2500,null,2,0.25,0.002,0.005,0.02);break;}
     case'bonk':this.tone(170,0.18,'sine',0.5,0,60);this.burst(0.12,0.35,600);break;
     case'bump':this.burst(0.16,0.45,420);this.tone(115,0.14,'square',0.12,0,60);this.tone(820,0.12,'sine',0.06,0.01);break;
-    case'horn':[0,0.2].forEach(w=>{this.tone(290,0.16,'sawtooth',0.12,w,255);this.tone(362,0.16,'square',0.05,w,320);});break;
+    case'horn':{const c=this.ctx,t=c.currentTime;
+      if(!this._hornCurve){const k=new Float32Array(256);for(let i=0;i<256;i++)k[i]=Math.tanh((i/128-1)*3);this._hornCurve=k;}
+      [[233,228,0.12],[294,288,0.1]].forEach(([f0,f1,pk])=>{const o=c.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+0.7);
+        const ws=c.createWaveShaper();ws.curve=this._hornCurve;const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2200;const g=c.createGain();
+        g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(pk,t+0.03);g.gain.setValueAtTime(pk,t+0.55);g.gain.exponentialRampToValueAtTime(0.0001,t+0.7);
+        o.connect(ws);ws.connect(lp);lp.connect(g);g.connect(this.master);o.start(t);o.stop(t+0.72);});
+      this.burst(0.7,0.05,1800,'bandpass',0,null,1.2);break;}
     case'beep':this.tone(440,0.15,'square',0.1);break;
     case'go':this.tone(880,0.35,'square',0.12);break;
     case'win':[523,659,784,1046].forEach((f,i)=>this.tone(f,0.2,'square',0.1,i*0.15));break;
@@ -1201,7 +1207,7 @@ function autoRam(){
 }
 function horn(){if(state!=='race')return;A.sfx('horn');const pz=playerZpos();
   for(const p of peds){if(!p.hit&&p.z>pz&&p.z-pz<2500&&p.mode==='cross'){p.hurry=2.5;p.pause=0;}}
-  addPopup('POM POM!','#fff',0.7,0.68,20);}
+  addPopup('PAAAAM!','#fff',0.8,0.68,20);}
 
 // ================= UPDATE =================
 function damage(n){run.insurance-=n;race.damage+=n;}
