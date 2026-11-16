@@ -271,7 +271,7 @@ function drawPerson(o,phase){
     const cx=w/2,s=Math.sin(phase*Math.PI/2),lift=h*0.035;
     shadow(g,cx,h-4,w*0.4);
     const headR=w*0.19,headY=headR+(o.open?w*0.55:3),torsoTop=headY+headR+2,torsoH=h*0.29,legTop=torsoTop+torsoH;
-    const legH=h-legTop-6,lL=Math.max(0,s)*lift,lR=Math.max(0,-s)*lift;
+    const legH=h-legTop-6,lL=o.still?0:Math.max(0,s)*lift,lR=o.still?0:Math.max(0,-s)*lift;
     // legs
     g.fillStyle=o.skin;
     g.fillRect(cx-w*0.17,legTop,w*0.12,legH-lL);g.fillRect(cx+w*0.05,legTop,w*0.12,legH-lR);
@@ -295,7 +295,7 @@ function drawPerson(o,phase){
     // backpack (behind)
     if(o.bag){g.fillStyle=o.bag;rr(g,cx-w*0.32,torsoTop+3,w*0.64,torsoH*0.9,6);g.fill();}
     // arms
-    const aL=s*h*0.02,aR=-s*h*0.02;
+    const aL=o.wave?-Math.abs(s)*h*0.09:s*h*0.02,aR=-s*h*0.02;
     const sleeve=o.sleeve||o.shirt;
     g.fillStyle=sleeve;rr(g,cx-w*0.38,torsoTop+2+aL,w*0.13,torsoH*0.55,3);g.fill();rr(g,cx+w*0.25,torsoTop+2+aR,w*0.13,torsoH*0.55,3);g.fill();
     g.fillStyle=o.skin;rr(g,cx-w*0.37,torsoTop+torsoH*0.52+aL,w*0.11,torsoH*0.42,3);g.fill();rr(g,cx+w*0.26,torsoTop+torsoH*0.52+aR,w*0.11,torsoH*0.42,3);g.fill();
@@ -336,6 +336,10 @@ function drawPerson(o,phase){
       if(hs==='bun'){g.beginPath();g.arc(cx+headR*0.75,headY-headR*0.7,headR*0.42,0,Math.PI*2);g.fill();if(o.flowers){g.fillStyle='#fffde7';for(let i=0;i<5;i++){g.beginPath();g.arc(cx+headR*(0.45+i*0.15),headY-headR*(0.35+Math.sin(i)*0.2),1.6,0,Math.PI*2);g.fill();}}}
       if(hs==='long'||hs==='braid'){g.fillRect(cx-headR*1.02,headY-headR*0.25,headR*0.35,headR*1.6);g.fillRect(cx+headR*0.67,headY-headR*0.25,headR*0.35,headR*1.6);}
       if(hs==='braid'){g.beginPath();g.ellipse(cx+headR*1.05,headY+headR*1.6,headR*0.22,headR*0.6,0,0,Math.PI*2);g.fill();g.fillStyle='#e91e63';g.fillRect(cx+headR*0.9,headY+headR*2.1,headR*0.32,2);}}
+    if(o.cap){g.fillStyle=o.cap;g.beginPath();g.ellipse(cx,headY-headR*0.55,headR*1.12,headR*0.5,0,Math.PI,0);g.fill();g.fillRect(cx-headR*1.05,headY-headR*0.62,headR*2.1,headR*0.32);
+      g.fillStyle='#111';g.fillRect(cx-headR*1.05,headY-headR*0.36,headR*2.1,headR*0.16);g.fillStyle='#d4af37';g.beginPath();g.arc(cx,headY-headR*0.72,headR*0.18,0,Math.PI*2);g.fill();}
+    if(o.whistle){g.strokeStyle='#e0e0e0';g.lineWidth=1;g.beginPath();g.moveTo(cx-headR*0.6,torsoTop+2);g.lineTo(cx+w*0.12,torsoTop+torsoH*0.45);g.stroke();}
+    if(o.belt){g.fillStyle='#3e2723';g.fillRect(cx-w*0.25,legTop-4,w*0.5,4);g.fillStyle='#d4af37';g.fillRect(cx-2,legTop-4,4,4);}
     if(o.glasses){g.strokeStyle='#111';g.lineWidth=1.1;g.strokeRect(cx-headR*0.72,headY-2.5,headR*0.58,headR*0.45);g.strokeRect(cx+headR*0.14,headY-2.5,headR*0.58,headR*0.45);
       g.beginPath();g.moveTo(cx-headR*0.14,headY-1);g.lineTo(cx+headR*0.14,headY-1);g.stroke();}
     // accessories
@@ -485,6 +489,32 @@ function drawBanner(text,sub,checker,col){
   });
 }
 
+// ---------- STAGE 2 SCENERY ----------
+function drawWall(){return mk(200,70,0.9,(g)=>{
+  g.fillStyle=vgrad(g,8,70,['#b5562f','#9c4626','#7f3a20']);g.fillRect(0,10,200,60);
+  g.strokeStyle='rgba(0,0,0,.18)';g.lineWidth=1;for(let y=22;y<70;y+=12){g.beginPath();g.moveTo(0,y);g.lineTo(200,y);g.stroke();}
+  for(let y=10,r=0;y<70;y+=12,r++)for(let x=(r%2)*14;x<200;x+=28){g.beginPath();g.moveTo(x,y);g.lineTo(x,y+12);g.stroke();}
+  g.fillStyle='#f2efe6';g.fillRect(0,4,200,8);g.fillStyle='rgba(0,0,0,.15)';g.fillRect(0,11,200,2);
+  g.fillStyle='rgba(0,0,0,.08)';for(let i=0;i<10;i++)g.fillRect(Math.random()*200,20+Math.random()*40,Math.random()*20+4,2);});}
+function drawBanyan(){return mk(320,360,1.5,(g,w,h)=>{
+  g.fillStyle=hgrad(g,130,190,['#4e342e','#6d4c41','#4e342e']);g.beginPath();g.moveTo(140,h);g.lineTo(150,170);g.lineTo(172,170);g.lineTo(184,h);g.fill();
+  g.strokeStyle='#5d4037';g.lineWidth=3;for(let i=0;i<8;i++){const x=40+i*34;g.beginPath();g.moveTo(x,150);g.lineTo(x+Math.sin(i)*6,h-6);g.stroke();}
+  for(const [c,n,rr0] of [['#1b5e20',14,70],['#2e7d32',12,55],['#43a047',9,40]])for(let i=0;i<n;i++){g.fillStyle=c;g.beginPath();g.arc(30+Math.random()*260,40+Math.random()*120,rr0*(0.6+Math.random()*0.5),0,Math.PI*2);g.fill();}});}
+function drawGopuram(){return mk(400,300,1.7,(g,w,h)=>{
+  g.fillStyle=vgrad(g,120,h,['#fafafa','#e0e0e0']);g.fillRect(70,130,260,170);
+  g.fillStyle='#5d4037';g.beginPath();g.moveTo(160,h);g.lineTo(160,190);g.quadraticCurveTo(200,160,240,190);g.lineTo(240,h);g.fill();
+  g.fillStyle='#3e2723';g.fillRect(198,190,4,h-190);
+  g.fillStyle='#d4af37';for(let i=0;i<6;i++)g.fillRect(84+i*44,150,6,26);
+  const roof=(y,w0,w1,hh)=>{g.fillStyle=vgrad(g,y-hh,y,['#a1441f','#8d3b1f','#6d2c14']);g.beginPath();g.moveTo(200-w0/2,y);g.lineTo(200+w0/2,y);g.lineTo(200+w1/2,y-hh);g.lineTo(200-w1/2,y-hh);g.closePath();g.fill();
+    g.strokeStyle='rgba(0,0,0,.2)';g.lineWidth=1.5;for(let k=0;k<5;k++){const yy=y-hh*k/5;g.beginPath();g.moveTo(200-w0/2+(w0-w1)/2*k/5,yy);g.lineTo(200+w0/2-(w0-w1)/2*k/5,yy);g.stroke();}};
+  roof(136,400,250,56);roof(84,280,150,50);g.fillStyle='#d4af37';g.fillRect(196,10,8,26);g.beginPath();g.arc(200,10,6,0,Math.PI*2);g.fill();
+  g.fillStyle='#ffca28';for(let i=0;i<9;i++){g.beginPath();g.arc(90+i*28,182,3.5,0,Math.PI*2);g.fill();}});}
+function drawPedestal(){return mk(160,70,0.3,(g)=>{
+  shadow(g,80,60,70);
+  for(let i=0;i<8;i++){g.fillStyle=i%2?'#111':'#fdd835';g.beginPath();g.moveTo(10+i*17.5,58);g.lineTo(27.5+i*17.5,58);g.lineTo(27.5+i*17.5,44);g.lineTo(10+i*17.5,44);g.fill();}
+  g.fillStyle='#e0e0e0';g.beginPath();g.ellipse(80,44,70,10,0,0,Math.PI*2);g.fill();
+  fitText(g,'POLICE',80,52,60,8,'#c62828');});}
+
 // ---------- BUILDINGS ----------
 const SHOPS=[['CHAAYA KADA','#c62828'],['MEDICALS','#2e7d32'],['BAKERY & COOL BAR','#ad1457'],['TEXTILES','#4527a0'],['MOBILE SHOP','#0277bd'],
   ['HOTEL · MEALS READY','#e65100'],['FANCY STORE','#00838f'],['HARDWARES','#5d4037'],['JEWELLERY','#b8860b'],['STUDIO · PHOTOSTAT','#37474f'],
@@ -575,6 +605,7 @@ function buildArt(){
   SPR.kunjumon=drawAuto('#f9d71c','#ffffff','#b71c1c',0.28,'KING OF ROAD',{skin:'#7a4a26',shirt:'#212121'});
   SPR.babukuttan=drawAuto('#f9d71c','#ff9800','#1b5e20',0.28,'SLOW & STEADY',{skin:'#c68642',shirt:'#1e88e5'});
   SPR.otherAuto=drawAuto('#2e7d32','#f9d71c','#1b1b1b',0.28,'CNG',{skin:'#8d5524',shirt:'#795548'});
+  SPR.pachu=drawAuto('#f9d71c','#ab47bc','#4a148c',0.28,'SHORTCUT KING',{skin:'#9c6b43',shirt:'#fdd835'});
   SPR.parkedAuto=drawAuto('#f9d71c','#111111','#111111',0.28*0.8,'',null);
   SPR.scooter=drawFamilyScooter();SPR.bike=drawSuperbike();SPR.delivery=drawDelivery();
   SPR.car=[drawCar('#ececec'),drawCar('#b71c1c'),drawCar('#455a64'),drawCar('#1565c0'),drawCar('#9e9e9e')];
@@ -611,12 +642,12 @@ function buildArt(){
   SPR.postL=drawPost();
   SPR.postR=mk(60,320,0.12,(g)=>{g.translate(60,0);g.scale(-1,1);g.drawImage(SPR.postL,0,0,60,320);});
   SPR.postL.lamp=[52/60,15/320];SPR.postR.lamp=[8/60,15/320];
-  [SPR.player,SPR.thankapan,SPR.kunjumon,SPR.babukuttan,SPR.otherAuto].forEach(c=>c.tail=[[.18,.67],[.82,.67]]);
+  [SPR.player,SPR.thankapan,SPR.kunjumon,SPR.babukuttan,SPR.pachu,SPR.otherAuto].forEach(c=>c.tail=[[.18,.67],[.82,.67]]);
   [...SPR.car,SPR.rich].forEach(c=>c.tail=[[.15,.57],[.85,.57]]);
   [SPR.gbus,SPR.pbus].forEach(c=>c.tail=[[.11,.79],[.89,.79]]);
   SPR.scooter.tail=[[.5,.67]];SPR.bike.tail=[[.5,.63]];SPR.delivery.tail=[[.5,.67]];
   const SZ=0.8;
-  [SPR.player,SPR.thankapan,SPR.kunjumon,SPR.babukuttan,SPR.otherAuto,SPR.scooter,SPR.bike,SPR.delivery,SPR.rich,SPR.gbus,SPR.pbus,...SPR.car].forEach(c=>c.ww*=SZ);
+  [SPR.player,SPR.thankapan,SPR.kunjumon,SPR.babukuttan,SPR.pachu,SPR.otherAuto,SPR.scooter,SPR.bike,SPR.delivery,SPR.rich,SPR.gbus,SPR.pbus,...SPR.car].forEach(c=>c.ww*=SZ);
   for(const g of ['kid','adult','old'])SPR.people[g].forEach(fr=>fr.forEach(c=>c.ww*=SZ));
   SPR.parked=[SPR.parkedAuto,drawParkedScooter('#1e88e5'),drawParkedScooter('#e53935'),drawParkedScooter('#757575'),
     drawCar('#9e9e9e',{ww:0.38*SZ}),drawCar('#283593',{ww:0.38*SZ}),drawCar('#f5f5f5',{ww:0.38*SZ})];
@@ -628,6 +659,14 @@ function buildArt(){
   SPR.facades={1:[],2:[],3:[]};
   for(const f of [1,2,3])for(let i=0;i<10;i++)SPR.facades[f].push(makeFacade(f,U.pick(SHOPS),U.pick(WALLS)));
   SPR.temple=makeTemple();
+  SPR.wall=drawWall();SPR.banyan=drawBanyan();SPR.gopuram=drawGopuram();SPR.pedestal=drawPedestal();
+  SPR.police=[0,1].map(k=>personFrames({w:50,h:150,ww:0.1*0.8,skin:U.pick(SKIN),hair:'#111111',hs:'short',mustache:true,cap:'#3e3a2a',whistle:true,belt:true,
+    shirt:'#c9b27c',sleeve:'#ffffff',collar:true,bottom:'#b8a06a',bt:'pants',shoe:'#111',still:true,wave:true}));
+  SPR.swarajBg=mk(2048,170,0,(g,w,h)=>{
+    for(let x=0;x<w;x+=22){g.fillStyle=U.pick(['#2f5d3a','#2a5534','#356b41']);g.beginPath();g.arc(x,h-40-Math.random()*25,24+Math.random()*16,0,Math.PI*2);g.fill();}
+    g.fillStyle='#2a5534';g.fillRect(0,h-40,w,40);
+    for(const cx of [520,1560]){g.fillStyle='#5b2a1a';const t=(y,a,b,hh)=>{g.beginPath();g.moveTo(cx-a,y);g.lineTo(cx+a,y);g.lineTo(cx+b,y-hh);g.lineTo(cx-b,y-hh);g.closePath();g.fill();};
+      t(h-30,150,95,40);t(h-70,105,60,34);t(h-104,70,30,28);g.fillStyle='#c9a227';g.fillRect(cx-3,h-150,6,22);}},1);
   SPR.town=mk(2048,140,0,(g,w,h)=>{for(let x=0;x<w;){const bw=30+Math.random()*60,bh=30+Math.random()*90;g.fillStyle=U.pick(['#9fb3c2','#a9bccb','#94aabb','#b4c4d1']);g.fillRect(x,h-bh,bw,bh);
     g.fillStyle='rgba(60,80,100,.35)';for(let yy=h-bh+8;yy<h-8;yy+=14)for(let xx=x+5;xx<x+bw-8;xx+=12)g.fillRect(xx,yy,6,7);x+=bw+Math.random()*40;}},1);
   SPR.townNight=mk(2048,140,0,(g,w,h)=>{for(let x=0;x<w;){const bw=30+Math.random()*60,bh=30+Math.random()*90;
@@ -664,7 +703,7 @@ const PAL={
 };
 const STAGES=[
   {id:1,lv:1,name:'Town Market Road',km:5,d:'Shops, footpaths and the market crowd.',built:true},
-  {id:2,lv:2,name:'Swaraj Round',km:6,d:'The big circular road around the Vadakkumnathan ground.'},
+  {id:2,lv:2,name:'Swaraj Round',km:6,d:'One-way loop around the Vadakkumnathan ground. Watch for traffic police.',built:true},
   {id:3,lv:2,name:'Shakthan Bus Stand Road',km:6,d:'Private buses pulling out without warning.'},
   {id:4,lv:2,name:'Guruvayur Temple Road',km:6,d:'Pilgrims, flower stalls and wedding processions.'},
   {id:5,lv:2,name:'College Road – Exam Day',km:6,d:'Students rushing across with hall tickets.'},
@@ -681,16 +720,31 @@ let memUnl=1;
 const prog={get(){try{const v=parseInt(localStorage.getItem('pcg_unlocked'),10);return isNaN(v)?memUnl:Math.max(1,Math.min(5,v));}catch(e){return memUnl;}},
   set(v){memUnl=v;try{localStorage.setItem('pcg_unlocked',String(v));}catch(e){}}};
 let curStage=STAGES[0];
-const STAGE={id:1,name:'Town Market Road',km:5,segments:4000,peds:200,vehicles:46,trafficMul:0.8,rivals:['thankapan','kunjumon','babukuttan']};
+const STAGECFG={
+  1:{id:1,name:'Town Market Road',km:5,segments:4000,peds:200,vehicles:46,trafficMul:0.8,rivals:['thankapan','kunjumon','babukuttan'],
+     pedMix:{kid:30,adult:45,old:25},modes:[0.6,0.85],track:'town',market:0.6,bg:'town',
+     banners:[['WELCOME TO TOWN MARKET','Drive slowly · School zone ahead'],['ONAM MEGA SALE · 50% OFF','Textiles · Jewellery · Home appliances'],['TEMPLE ULSAVAM · 7 DAYS','Chenda melam every evening'],['BLOOD DONATION CAMP','Govt. Hospital · Sunday 9 AM'],['SPEED LIMIT 30','Kerala Motor Vehicles Dept.']],
+     finishSub:'ETHI! ETHI!'},
+  2:{id:2,name:'Swaraj Round',km:6,segments:4800,peds:210,vehicles:56,trafficMul:0.85,rivals:['thankapan','kunjumon','pachu'],
+     pedMix:{kid:15,adult:62,old:23},modes:[0.5,0.7],track:'swaraj',market:1,bg:'swaraj',leftGround:true,greenAll:true,police:6,
+     vehW:{scooter:10,bike:8,car:26,auto:14,gbus:18,pbus:10,rich:10,delivery:10},
+     quals:{adult:[{n:'+2',b:10},{n:'Degree',b:20},{n:'BCom',b:20},{n:'BTech',b:25},{n:'Masters',b:30},{n:'MBA',b:35},{n:'Doctor',b:40},{n:'PhD',b:45},{n:'IAS',b:50}],
+            old:[{n:'SSLC',b:10},{n:'Degree',b:20},{n:'Retd Teacher',b:30},{n:'Retd Bank Manager',b:35},{n:'Retd Judge',b:40}]},
+     banners:[['WELCOME TO SWARAJ ROUND','Thekkinkadu Maidan · Thrissur'],['ONE WAY · CLOCKWISE ONLY','Kerala Police · Traffic'],['NO HORN ZONE','Temple area · Please co-operate'],['THRISSUR POORAM','Coming this Medam · Kudamattam at 5 PM'],['SPEED LIMIT 30','Kerala Motor Vehicles Dept.']],
+     finishSub:'ROUND KAZHINJU!'}
+};
+let STAGE=STAGECFG[1];
 const RIVAL_DEFS={
   thankapan:{name:'Thankapan Nair',edu:'4th std',base:0.9,persona:'clean',color:'#64b5f6'},
   kunjumon:{name:'Kunjumon',edu:'7th failed',base:0.86,persona:'ram',color:'#ef5350'},
-  babukuttan:{name:'Babukuttan',edu:'9th std',base:0.81,persona:'block',color:'#ffb74d'}
+  babukuttan:{name:'Babukuttan',edu:'9th std',base:0.81,persona:'block',color:'#ffb74d'},
+  pachu:{name:'Pachu',edu:'6th std',base:0.88,persona:'weave',color:'#ce93d8'}
 };
 const PLAYER_EDU='8th std';
 const NAMES={m:['Raghavan','Kuttappan','Mathai','Varkey','Sasidharan','Joseph','Abdul Kader','Pradeep','Suresh','Anil','Unnikrishnan','Biju','Shaji','Rajan','Thomas','Ashraf','Gopi','Pappachan'],
   f:['Leela','Saramma','Kunjamma','Fathima','Mini','Sheeba','Lakshmi','Anitha','Rosamma','Sainaba','Omana','Sindhu'],
   kid:['Appu','Kunju','Ammu','Minnu','Chinnu','Unni','Kichu','Manikuttan','Achu','Pinky']};
+const POLICE_QUOTES=['Vandi side-aakku! License eduku!','Nee aaraa, CM-nte makano?','Case aakum, kettoo!','Fine adachittu poyaal mathi!'];
 const QUOTES={
   kid:['Ente school bag poyedaa!','Ammede aduthu parayum, kettoo!','Uncle-nu license undo?','Ente ice cream poyi gadi!','Waaaah! Ammeee!'],
   adult:['Entha gadi, kannu kandoode?','Ninakku license undo?','Police-ne vilikkum, kettoo!','Ithu ente puthiya shirt aa gadi!','Ninakku vere pani onnum ille?','Pooram kazhinjittum ninte bhranthu theernille?','Nee aaraa, Thrissur-nte raajaavo?'],
@@ -710,6 +764,7 @@ const VQUOTES={scooter:['Kuttiyum bharyayum undayirunnu!','Ithu EMI-il eduthatha
   delivery:['Order late aayi, rating poyi!','Biriyani motham road-il, gadi!','Customer cancel cheythu, nee pay cheyyumo?']};
 const VICON={scooter:'🛵',bike:'🏍️',car:'🚗',auto:'🛺',gbus:'🚌',pbus:'🚌',rich:'🚙',delivery:'🛵'};
 function pedName(p){
+  if(p.g==='police')return (Math.random()<0.5?'SI ':'Constable ')+U.pick(NAMES.m);
   if(Math.random()<0.4)return null;
   const fem=!!p.sprite.fem,nm=U.pick(p.g==='kid'?NAMES.kid:fem?NAMES.f:NAMES.m),q=p.qual;
   if(q==='Doctor')return 'Dr. '+nm;if(q==='IAS')return nm+' IAS';if(q==='Retd Judge')return 'Justice '+nm+' (Retd)';
@@ -718,10 +773,11 @@ function pedName(p){
   if(p.g==='adult'&&Math.random()<0.5)return nm+(fem?' Chechi':' Chettan');
   return nm;
 }
-function pedQuote(p){return U.pick(QUOTES[p.qual]&&Math.random()<0.7?QUOTES[p.qual]:QUOTES[p.g]);}
+function pedQuote(p){if(p.g==='police')return U.pick(POLICE_QUOTES);return U.pick(QUOTES[p.qual]&&Math.random()<0.7?QUOTES[p.qual]:QUOTES[p.g]);}
 const HOSPITALS=['Taken to Mother Hospital 🚑','Taken to Mother Hospital 🚑','Taken to Mother Hospital 🚑','Taken to Thrissur Medical College 🚑','Taken to Jubilee Mission 🚑','Taken to Amala Hospital 🚑','Taken to District Hospital 🚑'];
 function pedOutcome(p){
   const r=Math.random();
+  if(p.g==='police')return {t:'Case registered 📝 — fine and bribe',h:0};
   if(p.g==='kid')return r<0.6?{t:U.pick(HOSPITALS),h:1}:{t:'Parents informed, naattukaar koodi',h:0};
   if(r<0.42)return{t:U.pick(HOSPITALS),h:1};
   if(r<0.6)return{t:'Minor scratches, went home cursing',h:0};
@@ -748,6 +804,7 @@ const QUALS={
   old:[{n:'SSLC',b:10},{n:'Degree',b:20},{n:'Retd Teacher',b:30},{n:'Retd Judge',b:40}]
 };
 const BASE={kid:60,adult:30,old:40};
+const VEH0=null;
 const VEH=[
   {t:'scooter',name:'Family scooter',social:60,ins:50,w:20,sp:0.35,len:180},
   {t:'bike',name:'Superbike',social:30,ins:80,w:12,sp:0.62,len:180},
@@ -779,10 +836,10 @@ function resize(){width=1024;height=Math.round(U.limit(1024*innerHeight/Math.max
 addEventListener('resize',resize);resize();
 
 // ================= TRACK =================
-let segments=[],trackLength=0,finishZ=0,buildings=[];
+let segments=[],trackLength=0,finishZ=0,buildings=[],policeSpots=[];
 function lastY(){return segments.length===0?0:segments[segments.length-1].p2.world.y;}
 function addSegment(curve,y){
-  const n=segments.length;const green=Math.floor(n/180)%3===2;const dark=Math.floor(n/rumbleLength)%2;
+  const n=segments.length;const green=STAGE.greenAll||Math.floor(n/180)%3===2;const dark=Math.floor(n/rumbleLength)%2;
   segments.push({index:n,p1:{world:{y:lastY(),z:n*segmentLength},camera:{},screen:{}},p2:{world:{y:y,z:(n+1)*segmentLength},camera:{},screen:{}},curve:curve,sprites:[],slices:[],bL:0,bR:0,color:green?(dark?PAL.gdark:PAL.glight):(dark?PAL.dark:PAL.light),clip:0});
 }
 function addRoad(enter,hold,leave,curve,y){
@@ -792,7 +849,7 @@ function addRoad(enter,hold,leave,curve,y){
   for(let n=0;n<leave;n++)addSegment(U.easeInOut(curve,0,n/leave),U.easeInOut(startY,endY,(enter+hold+n)/total));
 }
 function buildTrack(){
-  segments=[];const R=mulberry32(1101);const sgn=()=>R()<0.5?-1:1;
+  segments=[];const R=mulberry32(1100+STAGE.id);const sgn=()=>R()<0.5?-1:1;
   const L=ROAD.LENGTH,C=ROAD.CURVE,H=ROAD.HILL;
   const pieces=[
     ()=>addRoad(L.MEDIUM,L.MEDIUM,L.MEDIUM,0,0),
@@ -804,8 +861,17 @@ function buildTrack(){
     ()=>addRoad(L.LONG,L.LONG,L.LONG,sgn()*C.MEDIUM,0),
     ()=>addRoad(L.SHORT,L.SHORT,L.SHORT,sgn()*C.HARD,0)
   ];
+  const swaraj=[
+    ()=>addRoad(L.MEDIUM,L.MEDIUM,L.MEDIUM,-C.EASY,0),
+    ()=>addRoad(L.MEDIUM,L.LONG,L.MEDIUM,-1.5,0),
+    ()=>addRoad(L.SHORT,L.SHORT,L.SHORT,0,0),
+    ()=>addRoad(L.MEDIUM,L.MEDIUM,L.MEDIUM,-C.EASY,sgn()*H.LOW/2),
+    ()=>addRoad(L.SHORT,L.SHORT,L.SHORT,-2.6,0),
+    ()=>addRoad(L.LONG,L.MEDIUM,L.LONG,-1,0)
+  ];
+  const set=STAGE.track==='swaraj'?swaraj:pieces;
   addRoad(L.SHORT,L.SHORT,L.SHORT,0,0);
-  while(segments.length<STAGE.segments-160){pieces[Math.floor(R()*pieces.length)]();}
+  while(segments.length<STAGE.segments-160){set[Math.floor(R()*set.length)]();}
   addRoad(50,50,50,0,-lastY()/segmentLength);
   while(segments.length<STAGE.segments+drawDistance+150)addRoad(L.MEDIUM,L.MEDIUM,L.MEDIUM,0,0);
   for(let i=0;i<2;i++)segments[8+i].color=PAL.start;
@@ -817,9 +883,10 @@ function buildTrack(){
   buildings=[];
   const RI=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
   for(const side of [-1,1]){
+    if(side<0&&STAGE.leftGround)continue;
     let n=16;
     while(n<segments.length-6){
-      const market=n<STAGE.segments*0.6;
+      const market=n<STAGE.segments*STAGE.market;
       if(Math.random()<(market?0.88:0.3)){
         const temple=!market&&Math.random()<0.12;
         const floors=temple?1:(market?U.weighted([{w:30,v:1},{w:45,v:2},{w:25,v:3}]).v:U.weighted([{w:60,v:1},{w:40,v:2}]).v);
@@ -834,8 +901,14 @@ function buildTrack(){
       }else n+=RI(10,30);
     }
   }
+  if(STAGE.leftGround){
+    for(let n=12;n<segments.length;n+=4)addS(n,SPR.wall,-1.22);
+    for(let n=14;n<segments.length;n+=Math.floor(Math.random()*5)+4)addS(n,SPR.banyan,-U.rand(1.7,2.8));
+    for(const n of [300,1500,2700,3900])addS(n,SPR.gopuram,-1.45);
+    for(let n=20;n<segments.length;n+=Math.floor(Math.random()*30)+20)addS(n,U.pick(SPR.parked),-1.06);
+  }
   for(let n=14;n<segments.length;n+=Math.floor(Math.random()*4)+3){
-    const side=Math.random()<0.5?-1:1,r=Math.random();const seg=segments[n];
+    const side=STAGE.leftGround?1:(Math.random()<0.5?-1:1),r=Math.random();const seg=segments[n];
     const built=side<0?seg.bL:seg.bR;
     if(n%14===0)continue;
     if(built){ if(r<0.28)addS(n,U.pick(SPR.parked),side*U.rand(1.03,1.1));else if(r<0.4)addS(n,U.pick(SPR.palms),side*U.rand(1.18,1.28)); }
@@ -847,7 +920,8 @@ function buildTrack(){
     }
   }
   for(let n=14;n<segments.length;n+=14){addS(n,SPR.postL,-1.12,false,true);addS(n,SPR.postR,1.12,false,true);}
-  [450,1150,1900,2650,3350].forEach((n,i)=>addS(n,SPR.overhead[i%SPR.overhead.length],0,true));
+  const bstep=Math.floor(STAGE.segments/6);for(let i=0;i<5;i++)addS(bstep*(i+1)-150,SPR.overhead[i%SPR.overhead.length],0,true);
+  policeSpots=[];if(STAGE.police){for(let i=0;i<STAGE.police;i++){const n=Math.floor(STAGE.segments*(0.12+i*0.8/STAGE.police));addS(n,SPR.pedestal,0,true);policeSpots.push(n);}}
 }
 function findSegment(z){const n=segments.length;let i=Math.floor((z||0)/segmentLength)%n;if(i<0)i+=n;return segments[i];}
 
@@ -857,18 +931,20 @@ function spawnAll(){
   peds=[];vehicles=[];rivals=[];finishOrder=[];
   const start=45*segmentLength,end=finishZ-25*segmentLength;
   for(let i=0;i<STAGE.peds;i++){
-    const g=U.weighted([{w:30,v:'kid'},{w:45,v:'adult'},{w:25,v:'old'}]).v;
-    const q=U.pick(QUALS[g]);const r=Math.random();
-    const mode=r<0.6?'cross':(r<0.85?'edge':'side');
+    const pm=STAGE.pedMix;const g=U.weighted([{w:pm.kid,v:'kid'},{w:pm.adult,v:'adult'},{w:pm.old,v:'old'}]).v;
+    const q=U.pick((STAGE.quals&&STAGE.quals[g])||QUALS[g]);const r=Math.random();
+    const mode=r<STAGE.modes[0]?'cross':(r<STAGE.modes[1]?'edge':'side');
     const side=Math.random()<0.5?-1:1;
     const offset=mode==='cross'?U.rand(-1.2,1.2):(mode==='edge'?side*U.rand(0.72,1.0):side*U.rand(1.15,1.35));
     peds.push({kind:'ped',g,qual:q.n,pts:BASE[g]+q.b,z:start+Math.pow(Math.random(),1.25)*(end-start),offset,mode,
       dir:Math.random()<0.5?-1:1,_g:g,lat:U.rand(0.12,0.28)*(g==='old'?0.55:1)*(g==='kid'?1.35:1),pause:Math.random()*3,
       sprite:null,ww:0,len:60,hit:false,fly:0,flyDir:1,gone:false,passed:false,hurry:0});
   }
-  for(const p of peds){p.frames=U.pick(SPR.people[p.g]);p.sprite=p.frames[0];p.sprite.fem=p.frames.fem;p.ww=p.sprite.ww;p.phase=Math.random()*4;}
+  for(const n of policeSpots)peds.push({kind:'ped',g:'police',qual:'Traffic Police',pts:150,ins:100,z:n*segmentLength+segmentLength*0.6,offset:0,mode:'police',dir:1,lat:0,pause:0,
+    sprite:null,ww:0,len:60,hit:false,fly:0,flyDir:1,gone:false,passed:false,hurry:0});
+  for(const p of peds){p.frames=p.g==='police'?U.pick(SPR.police):U.pick(SPR.people[p.g]);p.sprite=p.frames[0];p.sprite.fem=p.frames.fem;p.ww=p.sprite.ww;p.phase=Math.random()*4;}
   for(let i=0;i<STAGE.vehicles;i++){
-    const d=U.weighted(VEH);
+    const d=STAGE.vehW?U.weighted(VEH.map(v=>({...v,w:STAGE.vehW[v.t]||v.w}))):U.weighted(VEH);
     const spr=d.t==='car'?U.pick(SPR.car):d.t==='auto'?SPR.otherAuto:SPR[d.t];
     vehicles.push({kind:'veh',def:d,name:d.name,social:d.social,ins:d.ins,len:d.len,sprite:spr,ww:spr.ww,
       z:U.rand(35*segmentLength,finishZ-60*segmentLength),offset:U.pick([-0.62,0,0.62])+U.rand(-0.08,0.08),
@@ -1027,7 +1103,12 @@ function openStages(){
   const rb=$('bReset');rb.onclick=()=>{if(rb.dataset.c){store.set(0);prog.set(1);openStages();}else{rb.dataset.c=1;rb.textContent='Tap again to reset everything (total and unlocks)';}};
 }
 function refreshTitle(){const L=store.get();$('tLife').textContent=(L>=0?'+':'')+U.fmt(L);$('tRate').textContent=rateFor(L);$('tIns').textContent=U.fmt(insFor(L));}
-function newRun(){const L=store.get();run={insurance:insFor(L),insMax:insFor(L),social:0};startRace();}
+function newRun(){STAGE=STAGECFG[curStage.id]||STAGECFG[1];stageArt();const L=store.get();run={insurance:insFor(L),insMax:insFor(L),social:0};startRace();}
+function stageArt(){
+  SPR.start=drawBanner(`START · STAGE ${STAGE.id}`,STAGE.name.toUpperCase(),false);
+  SPR.finish=drawBanner(`FINISH · ${STAGE.km} KM`,STAGE.finishSub,true);
+  SPR.overhead=STAGE.banners.map(b=>drawBanner(b[0],b[1],false));
+}
 function startRace(){
   buildTrack();spawnAll();
   position=0;speed=0;playerX=0;playerPushV=0;ramT=0;ramCd=0;stun=0;shake=0;bumpCd=0;nearCd=0;
@@ -1196,19 +1277,20 @@ function updateRivals(dt,pz){
     let dodge=0;const look=r.persona==='clean'?900:600;
     for(const v of vehicles){if(v.hit)continue;const dz=v.z-r.z;
       if(dz>0&&dz<look&&U.overlap(r.offset,r.ww,v.offset,v.ww,1.4)){const roomL=(v.offset-v.ww/2)+0.92,roomR=0.92-(v.offset+v.ww/2);dodge=roomL>roomR?-1:1;if(dz<350)target=Math.min(target,v.speed);break;}}
-    if(!dodge&&r.persona!=='ram'){for(const p of peds){if(p.hit||p.gone)continue;const dz=p.z-r.z;
+    if(!dodge){for(const p of peds){if(p.hit||p.gone)continue;if((r.persona==='ram'||r.persona==='weave')&&p.g!=='police')continue;const dz=p.z-r.z;
       if(dz>0&&dz<look&&U.overlap(r.offset,r.ww,p.offset,p.ww,1.8)){dodge=(p.offset+0.92>0.92-p.offset)?-1:1;break;}}}
     let steer=0;
     if(dodge)steer=dodge;
     else if(r.persona==='ram'&&Math.abs(d)<500&&r.ramCd<=0)steer=Math.sign(playerX-r.offset)*0.9;
     else if(r.persona==='block'&&d>0&&d<900)steer=Math.sign(playerX-r.offset)*0.6;
+    else if(r.persona==='weave')steer=Math.sin(race.time*1.4)*0.8+Math.sign(-0.65-r.offset)*0.25;
     else if(Math.abs(r.home-r.offset)>0.1)steer=Math.sign(r.home-r.offset)*0.3;
     r.offset=U.limit(r.offset+steer*1.1*dt,-0.92,0.92);
     r.speed+=(target-r.speed)*Math.min(1,dt*1.2);
     r.z+=r.speed*dt;
     for(const v of vehicles){if(v.hit)continue;const dz=v.z-r.z;
       if(Math.abs(dz)<(r.len+v.len)/2&&U.overlap(r.offset,r.ww,v.offset,v.ww,0.8)&&dz>0){r.z=v.z-(r.len+v.len)/2;r.speed=Math.min(r.speed,v.speed*0.9);}}
-    for(const p of peds){if(p.hit||p.gone)continue;
+    for(const p of peds){if(p.hit||p.gone||p.g==='police')continue;
       if(Math.abs(p.z-r.z)<(r.len+p.len)/2&&U.overlap(r.offset,r.ww,p.offset,p.ww,0.8)){
         p.hit=true;p.fly=0;p.flyDir=p.offset>=r.offset?1:-1;
         if(Math.abs(p.z-pz)<4000&&rivalHitCd<=0){rivalHitCd=2;addPopup(`${r.name} hit a ${p.qual}!`,'#cfcfcf',1.3,0.3,18);}}}
@@ -1223,7 +1305,8 @@ function collisions(pz){
         p.hit=true;p.fly=0;p.flyDir=p.offset>=playerX?1:-1;
         run.social+=p.pts;race.social+=p.pts;speed*=0.78;shake=Math.max(shake,0.15);A.sfx('screech');setTimeout(()=>A.sfx('bonk'),300);
         const nm=pedName(p),qt=pedQuote(p),oc=pedOutcome(p);
-        race.log.push({icon:p.g==='kid'?'🧒':p.g==='old'?'🧓':'🧑',title:nm||'Name unknown',sub:`${cap(p.g)} · ${p.qual}`,quote:qt,outcome:oc.t,hosp:oc.h,social:p.pts,ins:0});
+        if(p.ins){damage(p.ins);addPopup(`−${p.ins} Insurance points · Fine`,'#ffb74d',1.6,0.56,24);}
+        race.log.push({icon:p.g==='kid'?'🧒':p.g==='old'?'🧓':p.g==='police'?'👮':'🧑',title:nm||'Name unknown',sub:p.g==='police'?'Traffic Police':`${cap(p.g)} · ${p.qual}`,quote:qt,outcome:oc.t,hosp:oc.h,social:p.pts,ins:p.ins||0});
         addPopup(`+${p.pts} Social points · ${p.qual}`,'#ff6b6b',1.5,0.62,26);addPopup(`${nm||p.qual}: "${qt}"`,'#ffd1d1',1.6,0.62,20);
       }else if(!p.passed&&dz<-(plen+p.len)/2){p.passed=true;
         if(Math.abs(p.offset-playerX)<0.3&&speed>maxSpeed*0.3&&nearCd<=0){nearCd=2.5;addPopup('Bhagyam!','#9effb0',1,0.62,26);}}
@@ -1349,9 +1432,9 @@ function drawEntity(e,scale,x,y,clip){
     if(e.hit){
       const k=Math.min(e.fly/0.9,1);const lift=Math.sin(k*Math.PI)*1500*scale*height/2;
       drawSprite(e.sprite,scale,x,y-lift,-0.5,-1,null,e.fly*9*e.flyDir,e.fly>0.8?1-(e.fly-0.8)/0.4:1);return;}
-    const moving=e.mode==='cross'&&e.pause<=0;const fr=moving?e.frames[Math.floor(animT*(e.hurry>0?14:7)+e.phase)%4]:e.frames[0];
+    const moving=(e.mode==='cross'&&e.pause<=0)||e.mode==='police';const fr=moving?e.frames[Math.floor(animT*(e.hurry>0?14:7)+e.phase)%4]:e.frames[0];
     const r=drawSprite(fr,scale,x,y,-0.5,-1,clip);
-    if(r&&r.w>9&&r.y>0){const fs=U.limit(Math.round(r.w*0.55),9,15);tag(`${e.qual} ${e.pts}`,r.x+r.w/2,r.y-1,fs,'rgba(0,0,0,.6)',e.g==='kid'?'#80d8ff':e.g==='old'?'#e1bee7':'#fff59d');}
+    if(r&&r.w>9&&r.y>0){const fs=U.limit(Math.round(r.w*0.55),9,15);tag(e.g==='police'?`👮 Traffic Police ${e.pts}`:`${e.qual} ${e.pts}`,r.x+r.w/2,r.y-1,fs,'rgba(0,0,0,.6)',e.g==='police'?'#ffcc80':e.g==='kid'?'#80d8ff':e.g==='old'?'#e1bee7':'#fff59d');}
   }else if(e.kind==='veh'){
     const r=drawSprite(e.sprite,scale,x,y,-0.5,-1,clip);
     if(r&&!e.hit)tailLights(e.sprite,r);
@@ -1382,8 +1465,9 @@ function render(){
   if(night<0.75){const sy=height*(0.1+0.3*prog),sr=height*0.045;ctx.fillStyle=lerpCol('#fff59d','#ff7043',prog);ctx.globalAlpha=0.35*(1-night/0.75);ctx.beginPath();ctx.arc(width*0.78,sy,sr*1.8,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1-night/0.75;ctx.beginPath();ctx.arc(width*0.78,sy,sr,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;}
   ctx.globalAlpha=1-night*0.8;drawLayer(SPR.clouds,skyOffset,0,height*0.22);ctx.globalAlpha=1;
   drawLayer(SPR.hills,hillOffset,height*0.5-height*0.3+8,height*0.3);
-  drawLayer(SPR.town,(hillOffset*1.5)%1,height*0.5-height*0.15+6,height*0.15);
-  if(night>0.05){ctx.fillStyle=`rgba(8,10,38,${night*0.55})`;ctx.fillRect(-30,height*0.2,width+60,height*0.32);ctx.globalAlpha=night;drawLayer(SPR.townNight,(hillOffset*1.5)%1,height*0.5-height*0.15+6,height*0.15);ctx.globalAlpha=1;}
+  if(STAGE.bg==='swaraj')drawLayer(SPR.swarajBg,(hillOffset*1.5)%1,height*0.5-height*0.17+8,height*0.17);
+  else drawLayer(SPR.town,(hillOffset*1.5)%1,height*0.5-height*0.15+6,height*0.15);
+  if(night>0.05&&STAGE.bg!=='swaraj'){ctx.fillStyle=`rgba(8,10,38,${night*0.55})`;ctx.fillRect(-30,height*0.2,width+60,height*0.32);ctx.globalAlpha=night;drawLayer(SPR.townNight,(hillOffset*1.5)%1,height*0.5-height*0.15+6,height*0.15);ctx.globalAlpha=1;}
   drawLayer(SPR.trees,treeOffset,height*0.5-height*0.16+10,height*0.16);
   ctx.fillStyle='#2f6b3a';ctx.fillRect(-30,height*0.5+9,width+60,height);
   const last=Math.min(drawDistance,segments.length-baseSegment.index);
@@ -1456,7 +1540,7 @@ function drawHUD(){
   ctx.fillText(`${rank}/${rivals.length+1}`,22,44);
   ctx.fillStyle='#fff';ctx.font='bold 20px sans-serif';ctx.fillText(`${Math.round(speed/(finishZ/STAGE.km)*3600)} km/h`,95,42);
   ctx.font='bold 16px sans-serif';ctx.fillText(`${km.toFixed(2)} / ${STAGE.km.toFixed(2)} km`,22,70);
-  ctx.fillStyle='#f9d71c';ctx.font='bold 13px sans-serif';ctx.fillText(`Driver: You · ${PLAYER_EDU}`,22,90);ctx.fillStyle='#aaa';ctx.font='12px sans-serif';ctx.fillText('Stage 1 · Town Market Road',22,108);
+  ctx.fillStyle='#f9d71c';ctx.font='bold 13px sans-serif';ctx.fillText(`Driver: You · ${PLAYER_EDU}`,22,90);ctx.fillStyle='#aaa';ctx.font='12px sans-serif';ctx.fillText(`Stage ${STAGE.id} · ${STAGE.name}`,22,108);
   const bx=width-280;panel(bx-10,10,280,110);
   const insP=run.insurance/run.insMax;
   bar(bx,30,256,'INSURANCE POINTS',Math.max(0,run.insurance),run.insMax,insP>0.5?'#4caf50':insP>0.25?'#ffb300':'#f44336',insP<0.25);
