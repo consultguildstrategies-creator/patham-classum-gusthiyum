@@ -748,24 +748,36 @@ const PLAYER_EDU='8th std';
 const NAMES={m:['Raghavan','Kuttappan','Mathai','Varkey','Sasidharan','Joseph','Abdul Kader','Pradeep','Suresh','Anil','Unnikrishnan','Biju','Shaji','Rajan','Thomas','Ashraf','Gopi','Pappachan'],
   f:['Leela','Saramma','Kunjamma','Fathima','Mini','Sheeba','Lakshmi','Anitha','Rosamma','Sainaba','Omana','Sindhu'],
   kid:['Appu','Kunju','Ammu','Minnu','Chinnu','Unni','Kichu','Manikuttan','Achu','Pinky']};
-const POLICE_QUOTES=['Vandi side-aakku! License eduku!','Nee aaraa, CM-nte makano?','Case aakum, kettoo!','Fine adachittu poyaal mathi!'];
+const POLICE_QUOTES=['Vandi side-aakku! License eduku!','Nee aaraa, CM-nte makano?','Case aakum, kettoo!','Fine adachittu poyaal mathi!','RC book, insurance, pollution – ellam eduku!',
+  'Station-il vannu kanendi varum, gadi!','Breath analyser-il oothu!','Duty time-il ithu venda aayirunnu!','Helmet illa, belt illa, buddhiyum illa!','Nee ethra padichittundu? Kaanikku certificate!'];
 const QUOTES={
-  kid:['Ente school bag poyedaa!','Ammede aduthu parayum, kettoo!','Uncle-nu license undo?','Ente ice cream poyi gadi!','Waaaah! Ammeee!'],
-  adult:['Entha gadi, kannu kandoode?','Ninakku license undo?','Police-ne vilikkum, kettoo!','Ithu ente puthiya shirt aa gadi!','Ninakku vere pani onnum ille?','Pooram kazhinjittum ninte bhranthu theernille?','Nee aaraa, Thrissur-nte raajaavo?'],
-  old:['Ee kaalathe pillere kondu thottu!','Ente kannada poyi gadi!','Vadakkumnathaa, kaathukolane!','Ninte appan aaraa?','Ente kaalam kazhinju, kettoo…'],
-  'Doctor':['Njan thanne treat cheytholaam.','OP ticket edukkanam ini, gadi!'],
-  'IAS':['Ninte file njan nokkikolaam, kettoo!','Collector-ine vilikkum!'],
-  'Retd Judge':['Contempt of road aanu gadi!','Order! Order! Nee jail-il pokum!'],
-  'Retd Teacher':['Njan ninte appane padippichathaa, kettoo!','Imposition ezhuthikko – 100 times, gadi!'],
-  'BTech':['Placement interview-nu pokuvaarnnu!','Ente laptop poyedaa!'],
-  'Masters':['Thesis submit cheyyan pokuvaarnnu gadi!'],
-  'Kindergarten':['Waaaah! Ammeee!']
+  kid:['Ente school bag poyedaa!','Ammede aduthu parayum, kettoo!','Uncle-nu license undo?','Ente ice cream poyi gadi!','Waaaah! Ammeee!','Ente tiffin box chathanji!',
+    'Teacher-ode parayum!','Exam-nu pokuvaarnnu, hall ticket poyi!','Uncle, ningal ethra vare padichu?','Ente cycle-inekkal speed aanallo!','Achan police aanu, kettoo!','Ithu Instagram-il idum!'],
+  adult:['Entha gadi, kannu kandoode?','Ninakku license undo?','Police-ne vilikkum, kettoo!','Ithu ente puthiya shirt aa gadi!','Ninakku vere pani onnum ille?','Pooram kazhinjittum ninte bhranthu theernille?',
+    'Nee aaraa, Thrissur-nte raajaavo?','Ente office-il late aayi, boss kollum!','Ithu ellam video-il undu, kettoo!','Ninte vandi number note cheythu!','Ente kaal, ente kaal!','Bus stop-il ninnathaa njan, entha kuttam?',
+    'Ninte appanodu chodikkum!','Ithokke aaraa license koduthathu?','Ente phone-nte screen poyi gadi!','Engane ithra speed-il oru auto?'],
+  old:['Ee kaalathe pillere kondu thottu!','Ente kannada poyi gadi!','Vadakkumnathaa, kaathukolane!','Ninte appan aaraa?','Ente kaalam kazhinju, kettoo…','Daivame, ee chekkan!',
+    'Njangalude kaalathu ingane aayirunnilla!','Ente pension vaangaan pokuvaarnnu!','Ente muttu vedana kooodi!','Ninakku amma illede?','Sharkara-um pressure-um ippo onnichu vannu!','Ithokke kaanaan aanu njan jeevichirunnathu?'],
+  'Doctor':['Njan thanne treat cheytholaam.','OP ticket edukkanam ini, gadi!','Ninte BP njan pinne nokkaam!','Ente duty kazhinju pokuvaarnnu!','Ithu emergency case aanu, ente case!'],
+  'IAS':['Ninte file njan nokkikolaam, kettoo!','Collector-ine vilikkum!','Oru circular irakkum, ninakku vendi maathram!','Ninte permit cancel aakum!'],
+  'Retd Judge':['Contempt of road aanu gadi!','Order! Order! Nee jail-il pokum!','Ninakku jamyam kittilla!','Ithu njan suo motu edukkum!'],
+  'Retd Teacher':['Njan ninte appane padippichathaa, kettoo!','Imposition ezhuthikko – 100 times, gadi!','Ninne pandu thanne thottu, ippozhum maattamilla!','Bench-il kayari nikko!'],
+  'BTech':['Placement interview-nu pokuvaarnnu!','Ente laptop poyedaa!','Supply exam-nu pokuvaarnnu, ithum supply aayi!','Coding cheyyaan polum ithra bug illa!'],
+  'Masters':['Thesis submit cheyyan pokuvaarnnu gadi!','Guide-nodu enthu parayum?'],
+  'MBA':['Ithu ente startup pitch-nte divasam!','Ninte business model thanne thettaanu!'],
+  'PhD':['Ente research data poyi!','Ithine kurichu oru paper ezhuthum!'],
+  'BCom':['Ente ledger poyi gadi!','Tally-il polum ithra mistake illa!'],
+  'Retd Bank Manager':['Ninte loan njan pandu reject cheythathaa!','Ente passbook poyi!'],
+  'Kindergarten':['Waaaah! Ammeee!','Ente crayons!']
 };
-const VQUOTES={scooter:['Kuttiyum bharyayum undayirunnu!','Ithu EMI-il eduthathaa gadi!'],bike:['Ithu 3 lakh-nte bike aa!','Ente bike-nte paint poyedaa!'],
-  car:['Insurance details tha!','Bumper poyi gadi, kaasu venam!'],auto:['Union-il parayum, kettoo!','Namma aalu aanennu vicharichu!'],
-  gbus:['Sarkar vandi aanu gadi, case aakum!','Passengers ellam irangi!'],pbus:['Timing poyi! Owner kollum!','Bell adichathaa gadi, nee kettille?'],
-  rich:['Do you know who my father is?','My lawyer will call you.'],
-  delivery:['Order late aayi, rating poyi!','Biriyani motham road-il, gadi!','Customer cancel cheythu, nee pay cheyyumo?']};
+const VQUOTES={scooter:['Kuttiyum bharyayum undayirunnu!','Ithu EMI-il eduthathaa gadi!','Ente bharya-ude veettukaar ithu kaanumallo!','Kuttiye school-il kondu pokuvaarnnu!'],
+  bike:['Ithu 3 lakh-nte bike aa!','Ente bike-nte paint poyedaa!','Reels edukkaan pokuvaarnnu, ippo ithaanu reel!','Ente riding gear vaangiyittu ninte vandi!'],
+  car:['Insurance details tha!','Bumper poyi gadi, kaasu venam!','Puthiya car aanu, first service polum aayilla!','Dashcam-il ellam undu, kettoo!'],
+  auto:['Union-il parayum, kettoo!','Namma aalu aanennu vicharichu!','Stand-il vannu kaanaam, gadi!','Ninte permit aaraa thannathu?'],
+  gbus:['Sarkar vandi aanu gadi, case aakum!','Passengers ellam irangi!','Depot-il report cheyyum!','Ithinte damage ninte salary-il ninnu pidikkum!'],
+  pbus:['Timing poyi! Owner kollum!','Bell adichathaa gadi, nee kettille?','Ee trip-nte collection ninte thalayil!','Pinnaale varunna bus-um ithu kandu!'],
+  rich:['Do you know who my father is?','My lawyer will call you.','I will tweet about this.','This car costs more than your house.'],
+  delivery:['Order late aayi, rating poyi!','Biriyani motham road-il, gadi!','Customer cancel cheythu, nee pay cheyyumo?','Ente 5-star streak poyi!','Ithu ente last order aayirunnu, incentive poyi!']};
 const VICON={scooter:'🛵',bike:'🏍️',car:'🚗',auto:'🛺',gbus:'🚌',pbus:'🚌',rich:'🚙',delivery:'🛵'};
 function pedName(p){
   if(p.g==='police')return (Math.random()<0.5?'SI ':'Constable ')+U.pick(NAMES.m);
@@ -779,16 +791,15 @@ function pedName(p){
 }
 function pedQuote(p){if(p.g==='police')return U.pick(POLICE_QUOTES);return U.pick(QUOTES[p.qual]&&Math.random()<0.7?QUOTES[p.qual]:QUOTES[p.g]);}
 const HOSPITALS=['Taken to Mother Hospital 🚑','Taken to Mother Hospital 🚑','Taken to Mother Hospital 🚑','Taken to Thrissur Medical College 🚑','Taken to Jubilee Mission 🚑','Taken to Amala Hospital 🚑','Taken to District Hospital 🚑'];
+const PED_OUT=[['Minor scratches, went home cursing',18],['Filed a police complaint at the station',12],['Got up and chased you',10],['Posted it on Facebook and WhatsApp groups',10],
+  ['Called the local councillor',6],['Started a protest with the naattukaar',5],['Demanded compensation on the spot',8],['Went live on Instagram from the road',5],
+  ['Filed an RTI asking who gave you a license',4],['Walked off limping, swearing in pure Thrissur',8],['Took your photo and number',8]];
 function pedOutcome(p){
   const r=Math.random();
-  if(p.g==='police')return {t:'Case registered 📝 — fine and bribe',h:0};
-  if(p.g==='kid')return r<0.6?{t:U.pick(HOSPITALS),h:1}:{t:'Parents informed, naattukaar koodi',h:0};
+  if(p.g==='police')return {t:U.pick(['Case registered 📝 — fine and bribe','Case registered 📝 — vehicle seized for a day','Case registered 📝 — license suspended (on paper)']),h:0};
+  if(p.g==='kid')return r<0.6?{t:U.pick(HOSPITALS),h:1}:{t:U.pick(['Parents informed, naattukaar koodi','School principal is calling your house','Got a lollipop and stopped crying']),h:0};
   if(r<0.42)return{t:U.pick(HOSPITALS),h:1};
-  if(r<0.6)return{t:'Minor scratches, went home cursing',h:0};
-  if(r<0.72)return{t:'Filed a police complaint at the station',h:0};
-  if(r<0.82)return{t:'Got up and chased you',h:0};
-  if(r<0.92)return{t:'Posted it on Facebook and WhatsApp groups',h:0};
-  return{t:'Called the local councillor',h:0};
+  return{t:U.weighted(PED_OUT.map(([t,w])=>({t,w}))).t,h:0};
 }
 function vehDriver(v){
   if(v.def.t==='rich')return 'Mr. '+U.pick(['Tharakan','Kuruvila','Mammen','Chacko'])+' (VIP)';
@@ -799,8 +810,8 @@ function vehDriver(v){
   return n;
 }
 function vehOutcome(){const r=Math.random();
-  if(r<0.35)return{t:'Driver '+U.pick(HOSPITALS).replace('Taken','taken'),h:1};if(r<0.6)return{t:'Vehicle towed away',h:0};
-  if(r<0.85)return{t:'Demanding compensation',h:0};return{t:'Crowd gathered, you escaped',h:0};}
+  if(r<0.35)return{t:'Driver '+U.pick(HOSPITALS).replace('Taken','taken'),h:1};
+  return{t:U.pick(['Vehicle towed away','Demanding compensation','Crowd gathered, you escaped','Insurance surveyor on the way','Traffic jam till Shakthan stand','Both drivers arguing in the middle of the road','Settled for ₹500 and a chaaya']),h:0};}
 function cap(x){return x[0].toUpperCase()+x.slice(1);}
 const QUALS={
   kid:[{n:'Kindergarten',b:10},{n:'Class 5',b:15},{n:'Class 10',b:20}],
@@ -882,7 +893,7 @@ function buildTrack(){
   for(let i=0;i<3;i++)segments[STAGE.segments+i].color=PAL.finish;
   trackLength=segments.length*segmentLength;finishZ=STAGE.segments*segmentLength;
   // roadside
-  const addS=(n,s,off,center,post)=>{if(n<segments.length)segments[n].sprites.push({source:s,offset:off,center:!!center,post:!!post});};
+  const addS=(n,s,off,center,post,behind)=>{if(n<segments.length)segments[n].sprites.push({source:s,offset:off,center:!!center,post:!!post,behind:!!behind});};
   addS(8,SPR.start,0,true);addS(STAGE.segments,SPR.finish,0,true);
   buildings=[];
   const RI=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
@@ -906,9 +917,12 @@ function buildTrack(){
     }
   }
   if(STAGE.leftGround){
-    for(let n=12;n<segments.length;n+=4)addS(n,SPR.wall,-1.22);
-    for(let n=14;n<segments.length;n+=Math.floor(Math.random()*5)+4)addS(n,SPR.banyan,-U.rand(1.7,2.8));
-    for(const n of [300,1500,2700,3900])addS(n,SPR.gopuram,-1.45);
+    const gates=[300,1500,2700,3900];
+    const addWall=(a,b2)=>{if(b2-a<2)return;const w={kind:'wall',start:a,len:b2-a,side:-1,inner:1.22,w:0.07,h:480,hFull:480,floors:1,floorH:480};buildings.push(w);
+      for(let k=a;k<Math.min(b2,segments.length-1);k++){segments[k].slices.push(w);segments[k].bL=1.22;}};
+    let ws=12;for(const g of gates){addWall(ws,g-6);ws=g+8;}addWall(ws,segments.length-2);
+    for(let n=14;n<segments.length;n+=Math.floor(Math.random()*5)+4)addS(n,SPR.banyan,-U.rand(1.7,2.8),false,false,true);
+    for(const n of gates)addS(n,SPR.gopuram,-1.45,false,false,true);
     for(let n=20;n<segments.length;n+=Math.floor(Math.random()*30)+20)addS(n,U.pick(SPR.parked),-1.06);
   }
   for(let n=14;n<segments.length;n+=Math.floor(Math.random()*4)+3){
@@ -1382,6 +1396,21 @@ function drawSlice(b,k,clip){
   const needClip=clip&&sy(P1,0)>clip;
   if(needClip){ctx.save();ctx.beginPath();ctx.rect(-50,-50,width+100,clip+50);ctx.clip();}
   const t1=sy(P1,H),t2=sy(P2,H);
+  if(b.kind==='wall'){
+    const xi1=sx(P1,ins),xi2=sx(P2,ins),xo1=sx(P1,out),xo2=sx(P2,out),g1=sy(P1,0),g2=sy(P2,0);
+    poly(xi1,g1,sx(P1,ins+0.1),g1,sx(P2,ins+0.1),g2,xi2,g2,'rgba(0,0,0,.18)');
+    if((xi1-xi2)*b.side>0){
+      poly(xi1,g1,xi1,t1,xi2,t2,xi2,g2,(k>>1)%2?'#a44c29':'#9a4726');
+      const m=(f)=>[sy(P1,H*f),sy(P2,H*f)];
+      ctx.strokeStyle='rgba(60,20,8,.35)';ctx.lineWidth=Math.max(0.6,(g1-t1)*0.025);
+      for(const f of [0.3,0.55,0.8]){const [a,c]=m(f);ctx.beginPath();ctx.moveTo(xi1,a);ctx.lineTo(xi2,c);ctx.stroke();}
+      if(k%6===0){ctx.beginPath();ctx.moveTo(xi1,g1);ctx.lineTo(xi1,t1);ctx.stroke();}
+      const [c1,c2]=[sy(P1,H*1.12),sy(P2,H*1.12)];poly(xi1,t1,xi1,c1,xi2,c2,xi2,t2,'#e9e4d6');
+    }
+    const c1=sy(P1,H*1.12),c2=sy(P2,H*1.12);if(c2<c1)poly(xi1,c1,xo1,c1,xo2,c2,xi2,c2,'#f5f1e6');
+    if(k===b.start||k===b.start+b.len-1){ctx.fillStyle='#8a3d20';ctx.fillRect(Math.min(xi1,xo1),c1,Math.abs(xo1-xi1)+1,g1-c1);}
+    if(needClip)ctx.restore();return;
+  }
   if(t2<t1)poly(sx(P1,ins),t1,sx(P1,out),t1,sx(P2,out),t2,sx(P2,ins),t2,b.roofCol);
   const xi1=sx(P1,ins),xi2=sx(P2,ins);
   const sh=ins-b.side*0.12;
@@ -1495,8 +1524,10 @@ function render(){
   const wireLast=[null,null];
   for(let n=last-1;n>0;n--){
     const segment=segments[baseSegment.index+n];
+    for(const s of segment.sprites){if(!s.behind)continue;const sc=segment.p1.screen.scale;
+      drawSprite(s.source,sc,segment.p1.screen.x+(sc*s.offset*roadWidth*width/2),segment.p1.screen.y,s.offset<0?-1:0,-1,segment.clip);}
     if(segment.slices.length&&n+1<last)for(const b of segment.slices)drawSlice(b,segment.index,segment.clip);
-    for(const s of segment.sprites){
+    for(const s of segment.sprites){if(s.behind)continue;
       const sc=segment.p1.screen.scale;
       const sx=segment.p1.screen.x+(sc*s.offset*roadWidth*width/2);
       const r=drawSprite(s.source,sc,sx,segment.p1.screen.y,s.center?-0.5:(s.offset<0?-1:0),-1,segment.clip);
