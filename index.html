@@ -42,6 +42,29 @@ table.calc td:last-child{text-align:right;font-weight:700}
 table.calc tr.total td{color:#f5c518;font-size:18px;border-bottom:none}
 .lvl{background:#1f4d2b;border-radius:8px;padding:7px;margin:6px 0;color:#9effb0;font-weight:700}
 .note{font-size:13px;color:#aaa;margin:6px 0}
+.card.wide{max-width:980px;text-align:left}
+.sel-top{display:flex;flex-wrap:wrap;gap:12px;align-items:stretch;margin:10px 0 6px}
+.sel-top .stat{flex:1;min-width:150px;text-align:center}
+.prog{background:#14151d;border:1px solid #333;border-radius:10px;padding:10px 12px;margin:8px 0 4px}
+.prog .lbl{font-size:13px;color:#ddd}.prog .lbl b{color:#f5c518}
+.pbar{position:relative;height:14px;border-radius:7px;background:#2a2d3d;margin-top:8px;overflow:hidden}
+.pbar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#f5c518,#9effb0);border-radius:7px}
+.lvl-h{display:flex;align-items:center;gap:10px;margin:16px 0 8px;font-weight:900;letter-spacing:.5px}
+.lvl-h .tag{font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;background:#2a2d3d;color:#bbb}
+.lvl-h .tag.open{background:#1f4d2b;color:#9effb0}
+.stages{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.st{background:#252838;border:2px solid #343852;border-radius:12px;padding:12px;position:relative;min-height:118px;display:flex;flex-direction:column}
+.st .n{font-size:11px;color:#999;font-weight:800;letter-spacing:1px}
+.st h4{font-size:16px;margin:2px 0 4px;line-height:1.2}
+.st .d{font-size:12px;color:#aaa;flex:1}
+.st .go{margin-top:8px;align-self:flex-start;background:#f5c518;color:#111;border:none;border-radius:8px;padding:7px 14px;font-weight:900;cursor:pointer;font-family:inherit}
+.st.locked{opacity:.55}.st.locked .go,.st.soon .go{background:#3a3f55;color:#ccc;cursor:default}
+.st.play{border-color:#f5c518;box-shadow:0 0 0 1px rgba(245,197,24,.3)}
+.st.bonus{background:linear-gradient(135deg,#4a1414,#252838);border-color:#b71c1c}
+.unlock{background:#1f4d2b;border:2px solid #9effb0;border-radius:10px;padding:10px;margin:8px 0;color:#9effb0;font-weight:900;text-align:center;font-size:17px}
+@media (max-height:520px){.card{padding:10px 14px}.card h2{font-size:19px}.sel-top{gap:6px;margin:6px 0 2px}.sel-top .stat{padding:4px}.sel-top .stat b{font-size:15px}.sel-top .stat span{font-size:9px}
+  .prog{padding:6px 10px;margin:4px 0}.prog .lbl{font-size:12px}.pbar{height:9px;margin-top:5px}.lvl-h{margin:10px 0 6px;font-size:14px}.st{min-height:96px;padding:9px}.st h4{font-size:14px}.st .d{font-size:11px}}
+.reset{background:none;border:1px solid #555;color:#999;border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;font-family:inherit;margin-top:14px}
 .rep{text-align:left;background:#14151d;border-radius:8px;margin:8px 0;max-height:210px;overflow:auto;border:1px solid #333}
 .rephead{position:sticky;top:0;background:#2a2d3d;padding:6px 10px;font-weight:800;color:#f5c518;font-size:14px}
 .row{display:flex;gap:8px;padding:6px 10px;border-bottom:1px solid #262833;font-size:13px;line-height:1.35}
@@ -85,11 +108,11 @@ table.calc tr.total td{color:#f5c518;font-size:18px;border-bottom:none}
   <h1>PATHAM CLASSUM GUSTHIYUM</h1>
   <div class="sub">Auto Rickshaw Run · Stage 1: Town Market Road (5 km)</div>
   <div class="stats">
-    <div class="stat"><b id="tLife">0</b><span>Lifetime educational points</span></div>
+    <div class="stat"><b id="tLife">0</b><span>Educational points total</span></div>
     <div class="stat"><b id="tRate">60</b><span>Rate per km</span></div>
     <div class="stat"><b id="tIns">1000</b><span>Starting insurance points</span></div>
   </div>
-  <button class="btn" id="bPlay">PLAY</button>
+  <button class="btn" id="bPlay">PLAY ▸ CHOOSE STAGE</button>
   <button class="btn alt" id="bMute1">🔊 Sound</button>
   <button class="btn alt" id="bFull">⛶ Full screen</button>
   <button class="btn alt" id="bHome">← Nomadic Mirage</button>
@@ -112,6 +135,7 @@ table.calc tr.total td{color:#f5c518;font-size:18px;border-bottom:none}
   <button class="btn alt" id="bQuit">QUIT</button>
 </div></div>
 
+<div class="screen" id="sStages"><div class="card wide" id="stagesCard"></div></div>
 <div class="screen" id="sResult"><div class="card" id="resultCard"></div></div>
 <div class="screen" id="sOver"><div class="card" id="overCard"></div></div>
 
@@ -638,6 +662,25 @@ const PAL={
   start:{road:'#f5f5f5',grass:'#c0742e',rumble:'#f5f5f5',lane:null},
   finish:{road:'#111',grass:'#c0742e',rumble:'#fff',lane:null,checker:true}
 };
+const STAGES=[
+  {id:1,lv:1,name:'Town Market Road',km:5,d:'Shops, footpaths and the market crowd.',built:true},
+  {id:2,lv:2,name:'Swaraj Round',km:6,d:'The big circular road around the Vadakkumnathan ground.'},
+  {id:3,lv:2,name:'Shakthan Bus Stand Road',km:6,d:'Private buses pulling out without warning.'},
+  {id:4,lv:2,name:'Guruvayur Temple Road',km:6,d:'Pilgrims, flower stalls and wedding processions.'},
+  {id:5,lv:2,name:'College Road – Exam Day',km:6,d:'Students rushing across with hall tickets.'},
+  {id:6,lv:3,name:'Pooram Day',km:6,d:'Festival crowds, umbrellas, chenda melam and elephants.'},
+  {id:7,lv:3,name:'NH 544 Highway',km:8,d:'Trucks, tankers and the Paliyekkara toll plaza.'},
+  {id:8,lv:3,name:'Peechi Dam Road – Monsoon',km:8,d:'Heavy rain and a slippery road.'},
+  {id:9,lv:4,name:'Athirappilly Ghat Road',km:9,d:'Hairpin bends, monkeys and selfie tourists.'},
+  {id:10,lv:4,name:'Chavakkad Beach Road',km:10,d:'Sunset final showdown with every rival.'},
+  {id:11,lv:5,name:'KSRTC Sarkar Bus',km:6,d:'Hit anyone. No points, no consequences. Government takes care of it.',bonus:true}
+];
+const UNLOCK={2:{need:-300,from:1},3:{need:200,from:2},4:{need:500,from:3},5:{need:800,from:4}};
+const LVNAME={1:'Level 1',2:'Level 2',3:'Level 3',4:'Level 4',5:'Bonus'};
+let memUnl=1;
+const prog={get(){try{const v=parseInt(localStorage.getItem('pcg_unlocked'),10);return isNaN(v)?memUnl:Math.max(1,Math.min(5,v));}catch(e){return memUnl;}},
+  set(v){memUnl=v;try{localStorage.setItem('pcg_unlocked',String(v));}catch(e){}}};
+let curStage=STAGES[0];
 const STAGE={id:1,name:'Town Market Road',km:5,segments:4000,peds:200,vehicles:46,trafficMul:0.8,rivals:['thankapan','kunjumon','babukuttan']};
 const RIVAL_DEFS={
   thankapan:{name:'Thankapan Nair',edu:'4th std',base:0.9,persona:'clean',color:'#64b5f6'},
@@ -943,8 +986,47 @@ function updatePopups(dt){for(const p of popups)p.t+=dt;popups=popups.filter(p=>
 
 // ================= FLOW =================
 const $=id=>document.getElementById(id);
-function show(id){['sTitle','sPause','sResult','sOver'].forEach(s=>$(s).classList.toggle('show',s===id));}
-function refreshTitle(){const L=store.get();$('tLife').textContent=U.fmt(L);$('tRate').textContent=rateFor(L);$('tIns').textContent=U.fmt(insFor(L));}
+function show(id){['sTitle','sPause','sResult','sOver','sStages'].forEach(s=>$(s).classList.toggle('show',s===id));}
+function checkUnlock(stage,total){
+  const u=prog.get();const next=u+1;const rule=UNLOCK[next];
+  if(rule&&stage.lv===rule.from&&total>rule.need){prog.set(next);return next;}
+  return 0;
+}
+function nextRuleText(u,total){
+  const r=UNLOCK[u+1];if(!r)return {txt:'🏆 Everything unlocked — enjoy the government bus!',pct:100};
+  const lo=u+1===2?-1000:UNLOCK[u].need,hi=r.need;const pct=U.limit((total-lo)/(hi-lo)*100,0,100);
+  const ok=total>r.need;
+  return {txt:ok?`Total is above <b>${r.need>0?'+':''}${r.need}</b> — finish any <b>${LVNAME[r.from]}</b> stage to unlock <b>${LVNAME[u+1]}</b>.`
+              :`Unlock <b>${LVNAME[u+1]}</b>: get your total above <b>${r.need>0?'+':''}${r.need}</b>, then finish a <b>${LVNAME[r.from]}</b> stage. You need <b>${U.fmt(r.need-total+1)}</b> more.`,pct};
+}
+function openStages(){
+  const L=store.get(),u=prog.get(),nr=nextRuleText(u,L);
+  let h=`<h2 style="text-align:center">CHOOSE YOUR STAGE</h2>
+  <div class="sel-top">
+    <div class="stat"><b style="color:${L>=0?'#9effb0':'#ff8a80'}">${L>=0?'+':''}${U.fmt(L)}</b><span>Educational points total</span></div>
+    <div class="stat"><b>${rateFor(L)}</b><span>Rate per km</span></div>
+    <div class="stat"><b>${U.fmt(insFor(L))}</b><span>Starting insurance</span></div>
+    <div class="stat"><b>${LVNAME[u]}</b><span>Highest unlocked</span></div>
+  </div>
+  <div class="prog"><div class="lbl">${nr.txt}</div><div class="pbar"><i style="width:${nr.pct}%"></i></div></div>
+  <div class="note">Insurance and Social points reset at the start of every stage. Educational points add up across every stage you play.</div>`;
+  for(const lv of [1,2,3,4,5]){
+    const open=lv<=u,st=STAGES.filter(x=>x.lv===lv),rule=UNLOCK[lv];
+    h+=`<div class="lvl-h">${LVNAME[lv].toUpperCase()}${lv>1&&lv<5?' · pick any':''}<span class="tag ${open?'open':''}">${open?'UNLOCKED':`🔒 Above ${rule.need>0?'+':''}${rule.need} after a ${LVNAME[rule.from]} stage`}</span></div><div class="stages">`;
+    for(const x of st){
+      const cls=!open?'locked':!x.built?'soon':'play';
+      const btn=!open?'🔒 Locked':!x.built?'Coming soon':'▶ PLAY';
+      h+=`<div class="st ${cls}${x.bonus?' bonus':''}"><div class="n">${x.bonus?'BONUS':'STAGE '+x.id} · ${x.km} KM</div><h4>${x.bonus?'🚌 ':''}${x.name}</h4><div class="d">${x.d}</div><button class="go" data-st="${x.id}" ${cls==='play'?'':'disabled'}>${btn}</button></div>`;
+    }
+    h+='</div>';
+  }
+  h+=`<div style="text-align:center"><button class="btn alt" id="bStBack">← BACK</button><br><button class="reset" id="bReset">Reset progress</button></div>`;
+  $('stagesCard').innerHTML=h;state='stages';show('sStages');$('stagesCard').scrollTop=0;
+  $('stagesCard').querySelectorAll('.go[data-st]').forEach(b=>{if(!b.disabled)b.onclick=()=>{A.init();curStage=STAGES.find(x=>x.id===+b.dataset.st);newRun();};});
+  $('bStBack').onclick=()=>{refreshTitle();state='title';show('sTitle');};
+  const rb=$('bReset');rb.onclick=()=>{if(rb.dataset.c){store.set(0);prog.set(1);openStages();}else{rb.dataset.c=1;rb.textContent='Tap again to reset everything (total and unlocks)';}};
+}
+function refreshTitle(){const L=store.get();$('tLife').textContent=(L>=0?'+':'')+U.fmt(L);$('tRate').textContent=rateFor(L);$('tIns').textContent=U.fmt(insFor(L));}
 function newRun(){const L=store.get();run={insurance:insFor(L),insMax:insFor(L),social:0};startRace();}
 function startRace(){
   buildTrack();spawnAll();
@@ -973,19 +1055,20 @@ function finishRace(){
   const rank=1+finishOrder.length;const bonus={1:2,2:1,3:0.5}[rank]||0;
   const km=STAGE.km;const edu=(km+bonus)*race.rate-race.social-race.damage;
   const before=store.get(),after=before+edu;store.set(after);
+  const newLv=checkUnlock(curStage,after);
   const ord=['','1st','2nd','3rd','4th'][rank];
   const ml={1:'Kidilam!',2:'Kollaam!',3:'Kollaam!',4:'Saaramilla… next time.'}[rank];
   A.sfx(rank<=3?'win':'lose');
-  $('resultCard').innerHTML=`<h2>Stage 1 finished — ${ord} place!</h2><div class="ml">${ml}</div>
+  $('resultCard').innerHTML=`<h2>${curStage.name} finished — ${ord} place!</h2><div class="ml">${ml}</div>
     ${calcTable(km,bonus,edu)}
-    <div class="note">Lifetime educational points: <b>${U.fmt(after)}</b></div>
-    <div class="note">Run status (carries to next stage): Insurance points <b>${U.fmt(run.insurance)}/${U.fmt(run.insMax)}</b> · Social points <b>${U.fmt(run.social)}/1000</b></div>
-    ${hitReport()}
+    ${newLv?`<div class="unlock">🔓 ${LVNAME[newLv]} unlocked!${newLv===5?' The government bus is yours.':''}</div>`:''}
+    <div class="note">Educational points total: <b>${after>=0?'+':''}${U.fmt(after)}</b></div>
+    <div class="prog" style="text-align:left"><div class="lbl">${nextRuleText(prog.get(),after).txt}</div><div class="pbar"><i style="width:${nextRuleText(prog.get(),after).pct}%"></i></div></div>
     ${levelUps(before,after)}
-    <div class="note">${rank<=3?'✅ Stage 2 unlocked — coming in the next build.':'Finish in the top 3 to unlock stage 2.'}</div>
-    <button class="btn" id="bAgain">PLAY STAGE 1 AGAIN</button><button class="btn alt" id="bTitle1">TITLE</button>`;
+    ${hitReport()}
+    <button class="btn" id="bStages1">STAGE SELECT</button><button class="btn alt" id="bAgain">PLAY AGAIN</button><button class="btn alt" id="bTitle1">TITLE</button>`;
   show('sResult');
-  $('bAgain').onclick=()=>{A.init();newRun();};$('bTitle1').onclick=()=>{refreshTitle();state='title';show('sTitle');};
+  $('bStages1').onclick=()=>openStages();$('bAgain').onclick=()=>{A.init();newRun();};$('bTitle1').onclick=()=>{refreshTitle();state='title';show('sTitle');};
 }
 function endGame(kind){
   state='over';stopUI();A.sfx('lose');
@@ -997,12 +1080,12 @@ function endGame(kind){
     <div class="ml">${life?'Jeevitham poyi!':'Naadu nashippichu!'}</div>
     <div class="sub">${life?'Your insurance points hit zero.':'Your social points reached 1000.'}</div>
     ${calcTable(km,0,edu)}
-    <div class="note">Lifetime educational points: <b>${U.fmt(after)}</b></div>
+    <div class="note">Educational points total: <b>${after>=0?'+':''}${U.fmt(after)}</b> · Game over doesn't count as finishing, so no level unlocks from this race.</div>
     ${levelUps(before,after)}
     ${hitReport()}
-    <button class="btn" id="bRetry">TRY AGAIN</button><button class="btn alt" id="bTitle2">TITLE</button>`;
+    <button class="btn" id="bRetry">TRY AGAIN</button><button class="btn alt" id="bStages2">STAGE SELECT</button><button class="btn alt" id="bTitle2">TITLE</button>`;
   show('sOver');
-  $('bRetry').onclick=()=>{A.init();newRun();};$('bTitle2').onclick=()=>{refreshTitle();state='title';show('sTitle');};
+  $('bRetry').onclick=()=>{A.init();newRun();};$('bStages2').onclick=()=>openStages();$('bTitle2').onclick=()=>{refreshTitle();state='title';show('sTitle');};
 }
 function togglePause(){
   if(state==='race'||state==='countdown'){prevState=state;state='paused';$('pauseRep').innerHTML=hitReport();show('sPause');for(const k in keys)keys[k]=false;}
@@ -1289,7 +1372,7 @@ function render(){
   let maxy=height,x=0,dx=-(baseSegment.curve*basePercent);
   ctx.save();
   if(shake>0)ctx.translate((Math.random()-0.5)*shake*26,(Math.random()-0.5)*shake*16);
-  const prog=state==='title'?0:U.limit(pz/finishZ,0,1);
+  const prog=(state==='title'||state==='stages')?0:U.limit(pz/finishZ,0,1);
   night=forceNight?0.85:U.limit((prog-0.72)/0.28,0,1)*0.8;LIGHTS.length=0;
   const grd=ctx.createLinearGradient(0,0,0,height*0.55);
   grd.addColorStop(0,lerpCol(lerpCol('#4fa3dd','#3d4f9a',prog).replace(/rgb\((\d+),(\d+),(\d+)\)/,(m,a,b,c)=>'#'+[a,b,c].map(v=>(+v).toString(16).padStart(2,'0')).join('')),'#0a0f2e',night/0.85));
@@ -1352,7 +1435,7 @@ function render(){
   }
   drawLights();
   ctx.restore();
-  if(state!=='title')drawHUD();
+  if(state!=='title'&&state!=='stages')drawHUD();
   drawPopups();
   if(state==='countdown'){const c=Math.ceil(race.countdown);
     ctx.font='bold 110px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineWidth=8;ctx.strokeStyle='#000';
@@ -1429,7 +1512,7 @@ function tick(now){
   const dt=U.limit((now-last)/1000,0,0.2);last=now;
   try{
     animT+=dt;
-    if(state==='title'){attract+=dt;position=(position+dt*maxSpeed*0.35)%(finishZ-40*segmentLength);}
+    if(state==='title'||state==='stages'){attract+=dt;position=(position+dt*maxSpeed*0.35)%(finishZ-40*segmentLength);}
     else if(state!=='paused'){acc+=dt;while(acc>=STEP){update(STEP);acc-=STEP;}}
     if(!(position>=0))position=0;
     render();
@@ -1450,7 +1533,7 @@ addEventListener('keydown',e=>{
   else if(k==='l')tickerHidden=!tickerHidden;
   else if(k==='n')forceNight=!forceNight;
   else if(k==='f')goFull();
-  else if(k==='enter'&&state==='title'){newRun();}
+  else if(k==='enter'&&state==='title'){openStages();}
 });
 addEventListener('keyup',e=>{if(KEYMAP[e.key])keys[KEYMAP[e.key]]=false;});
 document.querySelectorAll('.tb').forEach(b=>{
@@ -1459,7 +1542,7 @@ document.querySelectorAll('.tb').forEach(b=>{
   const up=e=>{e.preventDefault();b.classList.remove('on');if(k)keys[k]=false;};
   b.addEventListener('pointerdown',down);b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',up);
 });
-$('bPlay').onclick=()=>{A.init();newRun();};
+$('bPlay').onclick=()=>{A.init();openStages();};
 const inFrame=(()=>{try{return window.self!==window.top;}catch(e){return true;}})();
 const SITE='https://www.nomadicmirage.com/pathamclassumgusthiyum';
 function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(toast._t);toast._t=setTimeout(()=>t.style.display='none',3800);}
@@ -1480,7 +1563,7 @@ canvas.addEventListener('pointerdown',e=>{if(state!=='race'&&state!=='countdown'
   const cx=(e.clientX-r.left)*width/r.width,cy=(e.clientY-r.top)*height/r.height;
   if(cx>=TICK.x&&cx<=TICK.x+TICK.w&&cy>=TICK.y&&cy<=TICK.y+(tickerHidden?26:TICK.h))tickerHidden=!tickerHidden;});
 $('bResume').onclick=()=>togglePause();
-$('bQuit').onclick=()=>{stopUI();refreshTitle();state='title';show('sTitle');};
+$('bQuit').onclick=()=>{stopUI();openStages();};
 $('pauseBtn').onclick=()=>togglePause();
 $('bMute1').onclick=()=>{A.init();A.toggle();};$('bMute2').onclick=()=>{A.init();A.toggle();};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&(state==='race'||state==='countdown'))togglePause();});
@@ -1488,7 +1571,7 @@ addEventListener('contextmenu',e=>e.preventDefault());
 
 // ================= BOOT =================
 buildArt();buildTrack();spawnAll();refreshTitle();updateMuteLabels();
-window.__ARR={get state(){return state;},get run(){return run;},get race(){return race;},get speed(){return speed;},get pz(){return playerZpos();},get px(){return playerX;},get rivals(){return rivals.map(r=>({n:r.name,z:Math.round(r.z),f:r.finished}));},finishZ:()=>finishZ,keys,newRun,setPos:v=>{position=v;}};
+window.__ARR={prog,store,openStages,checkUnlock,STAGES,get state(){return state;},get run(){return run;},get race(){return race;},get speed(){return speed;},get pz(){return playerZpos();},get px(){return playerX;},get rivals(){return rivals.map(r=>({n:r.name,z:Math.round(r.z),f:r.finished}));},finishZ:()=>finishZ,keys,newRun,setPos:v=>{position=v;}};
 requestAnimationFrame(frame);
 })();
 </script>
