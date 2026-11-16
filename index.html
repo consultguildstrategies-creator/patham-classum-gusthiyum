@@ -86,7 +86,7 @@ table.calc tr.total td{color:#f5c518;font-size:18px;border-bottom:none}
   <div class="sub">Auto Rickshaw Run · Stage 1: Town Market Road (5 km)</div>
   <div class="stats">
     <div class="stat"><b id="tLife">0</b><span>Lifetime educational points</span></div>
-    <div class="stat"><b id="tRate">40</b><span>Rate per km</span></div>
+    <div class="stat"><b id="tRate">60</b><span>Rate per km</span></div>
     <div class="stat"><b id="tIns">1000</b><span>Starting insurance points</span></div>
   </div>
   <button class="btn" id="bPlay">PLAY</button>
@@ -552,7 +552,7 @@ const store={
   set(v){memLife=v;try{localStorage.setItem('arr_lifetime',String(v));}catch(e){}}
 };
 const levels=L=>Math.floor(Math.max(0,L)/500);
-const rateFor=L=>40+5*levels(L);
+const rateFor=L=>60+5*levels(L);
 const insFor=L=>1000+250*levels(L);
 
 // ================= CANVAS =================
@@ -667,7 +667,7 @@ function spawnAll(){
 let state='title',prevState='race';
 let position=0,speed=0,playerX=0,playerPushV=0;
 let run={insurance:1000,insMax:1000,social:0};
-let race={social:0,damage:0,rate:40,time:0,countdown:3.2,lastBeep:4,log:[],rams:{}};
+let race={social:0,damage:0,rate:60,time:0,countdown:3.2,lastBeep:4,log:[],rams:{}};
 let ramT=0,ramDir=0,ramCd=0,stun=0,shake=0,bumpCd=0,nearCd=0,rivalHitCd=0,sideHitCd=0;
 let skyOffset=0,hillOffset=0,treeOffset=0;
 let popups=[];
