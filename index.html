@@ -64,6 +64,9 @@ table.calc tr.total td{color:#f5c518;font-size:18px;border-bottom:none}
 .unlock{background:#1f4d2b;border:2px solid #9effb0;border-radius:10px;padding:10px;margin:8px 0;color:#9effb0;font-weight:900;text-align:center;font-size:17px}
 @media (max-height:520px){.card{padding:10px 14px}.card h2{font-size:19px}.sel-top{gap:6px;margin:6px 0 2px}.sel-top .stat{padding:4px}.sel-top .stat b{font-size:15px}.sel-top .stat span{font-size:9px}
   .prog{padding:6px 10px;margin:4px 0}.prog .lbl{font-size:12px}.pbar{height:9px;margin-top:5px}.lvl-h{margin:10px 0 6px;font-size:14px}.st{min-height:96px;padding:9px}.st h4{font-size:14px}.st .d{font-size:11px}}
+.btn.warn{background:#c62828!important;color:#fff!important;box-shadow:0 4px 0 #7f0000!important}
+.lowwarn{background:#4d1f1f;border:1px solid #ff8a80;border-radius:10px;padding:8px 12px;margin:8px 0;color:#ffcdd2;font-size:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.lowwarn .btn{margin:0;padding:7px 14px;font-size:14px}
 .reset{background:none;border:1px solid #555;color:#999;border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;font-family:inherit;margin-top:14px}
 .rep{text-align:left;background:#14151d;border-radius:8px;margin:8px 0;max-height:210px;overflow:auto;border:1px solid #333}
 .rephead{position:sticky;top:0;background:#2a2d3d;padding:6px 10px;font-weight:800;color:#f5c518;font-size:14px}
@@ -106,7 +109,7 @@ table.calc tr.total td{color:#f5c518;font-size:18px;border-bottom:none}
 
 <div class="screen show" id="sTitle"><div class="card">
   <h1>PATHAM CLASSUM GUSTHIYUM</h1>
-  <div class="sub">Auto Rickshaw Run · Stage 1: Town Market Road (5 km)</div>
+  <div class="sub">Auto Rickshaw Run · 10 stages across Thrissur</div>
   <div class="stats">
     <div class="stat"><b id="tLife">0</b><span>Educational points total</span></div>
     <div class="stat"><b id="tRate">60</b><span>Rate per km</span></div>
@@ -115,9 +118,10 @@ table.calc tr.total td{color:#f5c518;font-size:18px;border-bottom:none}
   <button class="btn" id="bPlay">PLAY ▸ CHOOSE STAGE</button>
   <button class="btn alt" id="bMute1">🔊 Sound</button>
   <button class="btn alt" id="bFull">⛶ Full screen</button>
+  <button class="btn alt" id="bResetT">↺ Reset progress</button>
   <button class="btn alt" id="bHome">← Nomadic Mirage</button>
   <div class="help">
-    <b>Race</b> Thankapan Nair, Kunjumon and Babukuttan to the finish. Top 3 earns bonus km.<br>
+    <b>Race</b> Thankapan Nair and the other rivals to the finish. Top 3 earns bonus km. Unlock new levels from the stage select.<br>
     <b>Insurance points</b> drop when you crash into vehicles or bump rivals. At 0 you have wrecked your life.<br>
     <b>Social points</b> rise for every pedestrian or vehicle you hit. At 1000 you have wrecked the society.<br>
     <b>Educational points</b> = km × rate − social points − insurance points lost. Every 500 raises rate by 5 and insurance by 250.<br>
@@ -1075,6 +1079,8 @@ function nextRuleText(u,total){
   return {txt:ok?`Total is above <b>${r.need>0?'+':''}${r.need}</b> — finish any <b>${LVNAME[r.from]}</b> stage to unlock <b>${LVNAME[u+1]}</b>.`
               :`Unlock <b>${LVNAME[u+1]}</b>: get your total above <b>${r.need>0?'+':''}${r.need}</b>, then finish a <b>${LVNAME[r.from]}</b> stage. You need <b>${U.fmt(r.need-total+1)}</b> more.`,pct};
 }
+function armReset(btn,after){btn.onclick=()=>{if(btn.dataset.c){store.set(0);prog.set(1);refreshTitle();after&&after();toast('Progress reset. Educational points are back to 0 and only Level 1 is unlocked.');}
+  else{btn.dataset.c=1;const old=btn.textContent;btn.textContent='Tap again to confirm reset';btn.classList.add('warn');setTimeout(()=>{if(btn.isConnected&&btn.dataset.c){delete btn.dataset.c;btn.textContent=old;btn.classList.remove('warn');}},4000);}};}
 function openStages(){
   const L=store.get(),u=prog.get(),nr=nextRuleText(u,L);
   let h=`<h2 style="text-align:center">CHOOSE YOUR STAGE</h2>
@@ -1084,6 +1090,7 @@ function openStages(){
     <div class="stat"><b>${U.fmt(insFor(L))}</b><span>Starting insurance</span></div>
     <div class="stat"><b>${LVNAME[u]}</b><span>Highest unlocked</span></div>
   </div>
+  ${L<-1000?`<div class="lowwarn"><span>You're at <b>${U.fmt(L)}</b> Educational points. That's a deep hole.</span><button class="btn alt" id="bResetLow">↺ Start fresh</button></div>`:''}
   <div class="prog"><div class="lbl">${nr.txt}</div><div class="pbar"><i style="width:${nr.pct}%"></i></div></div>
   <div class="note">Insurance and Social points reset at the start of every stage. Educational points add up across every stage you play.</div>`;
   for(const lv of [1,2,3,4,5]){
@@ -1096,11 +1103,11 @@ function openStages(){
     }
     h+='</div>';
   }
-  h+=`<div style="text-align:center"><button class="btn alt" id="bStBack">← BACK</button><br><button class="reset" id="bReset">Reset progress</button></div>`;
+  h+=`<div style="text-align:center"><button class="btn alt" id="bStBack">← BACK</button><button class="btn alt" id="bReset">↺ Reset progress</button></div>`;
   $('stagesCard').innerHTML=h;state='stages';show('sStages');$('stagesCard').scrollTop=0;
   $('stagesCard').querySelectorAll('.go[data-st]').forEach(b=>{if(!b.disabled)b.onclick=()=>{A.init();curStage=STAGES.find(x=>x.id===+b.dataset.st);newRun();};});
   $('bStBack').onclick=()=>{refreshTitle();state='title';show('sTitle');};
-  const rb=$('bReset');rb.onclick=()=>{if(rb.dataset.c){store.set(0);prog.set(1);openStages();}else{rb.dataset.c=1;rb.textContent='Tap again to reset everything (total and unlocks)';}};
+  armReset($('bReset'),openStages);if($('bResetLow'))armReset($('bResetLow'),openStages);
 }
 function refreshTitle(){const L=store.get();$('tLife').textContent=(L>=0?'+':'')+U.fmt(L);$('tRate').textContent=rateFor(L);$('tIns').textContent=U.fmt(insFor(L));}
 function newRun(){STAGE=STAGECFG[curStage.id]||STAGECFG[1];stageArt();const L=store.get();run={insurance:insFor(L),insMax:insFor(L),social:0};startRace();}
@@ -1641,7 +1648,7 @@ function goFull(){
   else toast(/iPhone|iPod/.test(navigator.userAgent)?'iPhone: tap Share → "Add to Home Screen" to play full screen.':'Full screen is not supported in this browser.');
 }
 function goHome(){if(inFrame){toast('You are already on Nomadic Mirage 🙂');return;}location.href=SITE;}
-$('bFull').onclick=goFull;$('fsBtn').onclick=goFull;$('bHome').onclick=goHome;$('homeBtn').onclick=goHome;
+armReset($('bResetT'));$('bFull').onclick=goFull;$('fsBtn').onclick=goFull;$('bHome').onclick=goHome;$('homeBtn').onclick=goHome;
 if(inFrame){$('bHome').style.display='none';$('homeBtn').style.display='none';}
 canvas.addEventListener('pointerdown',e=>{if(state!=='race'&&state!=='countdown')return;const r=canvas.getBoundingClientRect();
   const cx=(e.clientX-r.left)*width/r.width,cy=(e.clientY-r.top)*height/r.height;
