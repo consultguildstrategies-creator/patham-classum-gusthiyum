@@ -915,7 +915,7 @@ const UNLOCK={2:{need:-300,from:1},3:{need:200,from:2},4:{need:500,from:3},5:{ne
 const LVNAME={1:'Level 1',2:'Level 2',3:'Level 3',4:'Level 4',5:'Bonus',6:'Extras'};
 let memUnl=1;
 const medals={get(){try{return JSON.parse(localStorage.getItem('pcg_medals')||'{}')||{};}catch(e){return memMed;}},set(o){memMed=o;try{localStorage.setItem('pcg_medals',JSON.stringify(o));}catch(e){}}};let memMed={};
-const prog={get(){try{const v=parseInt(localStorage.getItem('pcg_unlocked'),10);return isNaN(v)?memUnl:Math.max(1,Math.min(5,v));}catch(e){return memUnl;}},
+const prog={get(){return 5;try{const v=parseInt(localStorage.getItem('pcg_unlocked'),10);return isNaN(v)?memUnl:Math.max(1,Math.min(5,v));}catch(e){return memUnl;}},
   set(v){memUnl=v;try{localStorage.setItem('pcg_unlocked',String(v));}catch(e){}}};
 let curStage=STAGES[0];
 const STAGECFG={
